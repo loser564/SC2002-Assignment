@@ -1,8 +1,10 @@
 package src.basic;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
+import java.util.Date;
+import java.time.LocalDate;
 
 
 
@@ -77,14 +79,12 @@ public class Student {
 
     public void viewOpenCamps(List<Camp> openCamps) {
         for (Camp camp : openCamps) {
-            System.out.println("Camp Name: " + camp.getName());
-            System.out.println("Camp Description: " + camp.getDescription());
-            System.out.println("Remaining Slots: " + camp.getRemainingSlots());
+            System.out.println("Camp Name: " + camp.getName(camp));
+            System.out.println("Camp Description: " + camp.getDescription(camp));
+            System.out.println("Remaining Slots: " + camp.getRemainingSlots(camp));
             System.out.println();
         }
     }
-
-    
 
     public void registerForCamp(Camp camp, boolean isCommitteeMember) {
         if (registeredCamps.contains(camp)) {
@@ -93,15 +93,15 @@ public class Student {
             System.out.println("The camp is full. You cannot register for it.");
         } else if (!isCampDateAvailable(camp)) {
             System.out.println("There is a clash in the dates with another registered camp. You cannot register for this camp.");
-        } else if (!camp.isRegistrationOpen(camp)) {
+        } else if (camp.isRegistrationOpen(camp)==0) {
             System.out.println("The registration deadline for this camp has passed. You cannot register for it.");
         } else if (isCommitteeMember && isAlreadyCommitteeMember()) {
             System.out.println("You are already a committee member for another camp. You cannot register for this camp as a committee member.");
         } else {
             registeredCamps.add(camp);
-            camp.updateRemainingSlots(-1);
+            camp.addAttendee(this);
             if (isCommitteeMember) {
-                camp.addCommitteeMember(Student student);
+                camp.addCommitteeMember(this);
                 System.out.println("You have been added as a committee member for the camp: " + camp.getName());
             } else {
                 System.out.println("You have successfully registered as an attendee for the camp: " + camp.getName());
@@ -120,7 +120,7 @@ public class Student {
     
     public void withdrawFromCamp(Camp camp) {
         if (registeredCamps.remove(camp)) {
-            camp.updateRemainingSlots(1);
+            camp.removeAttendee(this);;
             System.out.println("You have successfully withdrawn from the camp: " + camp.getName());
         } else {
             System.out.println("You are not registered for this camp.");
@@ -138,10 +138,10 @@ public class Student {
     }
 
     private boolean isCampDateClash(Camp camp1, Camp camp2) {
-    	LocalDate startDate1 = camp1.getStartDate();
-    	LocalDate endDate1 = camp1.getEndDate();
-    	LocalDate startDate2 = camp2.getStartDate();
-    	LocalDate endDate2 = camp2.getEndDate();
+    	LocalDate startDate1 = LocalDate.parse("camp1.getStartDate(camp1)");
+    	LocalDate endDate1 = LocalDate.parse("camp1.getEndDate(camp1)");
+    	LocalDate startDate2 = LocalDate.parse("camp2.getStartDate(camp2)");
+    	LocalDate endDate2 = LocalDate.parse("camp2.getEndDate(camp2)");
 
     	return (startDate1.isBefore(endDate2) && endDate1.isAfter(startDate2));
     }
