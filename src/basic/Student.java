@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Scanner;
 
 
+
+
 public class Student {
     private String userId;
     private String password;
@@ -82,14 +84,16 @@ public class Student {
         }
     }
 
+    
+
     public void registerForCamp(Camp camp, boolean isCommitteeMember) {
         if (registeredCamps.contains(camp)) {
             System.out.println("You are already registered for this camp.");
-        } else if (!camp.hasAvailableSlots()) {
+        } else if (!camp.hasAvailableSlots(camp)) {
             System.out.println("The camp is full. You cannot register for it.");
         } else if (!isCampDateAvailable(camp)) {
             System.out.println("There is a clash in the dates with another registered camp. You cannot register for this camp.");
-        } else if (!isRegistrationOpen(camp)) {
+        } else if (!camp.isRegistrationOpen(camp)) {
             System.out.println("The registration deadline for this camp has passed. You cannot register for it.");
         } else if (isCommitteeMember && isAlreadyCommitteeMember()) {
             System.out.println("You are already a committee member for another camp. You cannot register for this camp as a committee member.");
@@ -97,7 +101,7 @@ public class Student {
             registeredCamps.add(camp);
             camp.updateRemainingSlots(-1);
             if (isCommitteeMember) {
-                camp.addCommitteeMember(this);
+                camp.addCommitteeMember(Student student);
                 System.out.println("You have been added as a committee member for the camp: " + camp.getName());
             } else {
                 System.out.println("You have successfully registered as an attendee for the camp: " + camp.getName());
