@@ -1,4 +1,5 @@
 package src.basic;
+import java.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,16 +13,16 @@ public class Student {
     private String userId;
     private String password;
     private String name;
-    private String userGroup;
+    private String faculty;
     private boolean isCampCommittee;
     private List<Enquiry> enquiries;
     private List<Camp> registeredCamps;
 
-    public Student(String userId, String password, String name, String userGroup, boolean isCampCommittee) {
+    public Student(String userId, String password, String name, String faculty, boolean isCampCommittee) {
         this.userId = userId;
         this.password = password;
         this.name = name;
-        this.userGroup = userGroup;
+        this.faculty = faculty;
         this.isCampCommittee = isCampCommittee;
         this.enquiries = new ArrayList<>();
         this.registeredCamps = new ArrayList<>();
@@ -46,11 +47,18 @@ public class Student {
     }
 
     public String getUserGroup() {
-        return userGroup;
+        return faculty;
     }
-
-    public void setUserGroup(String userGroup) {
-        this.userGroup = userGroup;
+    public String getRole(){
+        if(isCampCommittee){
+            return "Camp Committee";
+        }
+        else{
+            return "Student";
+        }
+    }
+    public void setUserGroup(String faculty) {
+        this.faculty = faculty;
     }
 
     public boolean isCampCommittee() {
@@ -102,9 +110,9 @@ public class Student {
             camp.addAttendee(this);
             if (isCommitteeMember) {
                 camp.addCommitteeMember(this);
-                System.out.println("You have been added as a committee member for the camp: " + camp.getName());
+                System.out.println("You have been added as a committee member for the camp: " + camp.getName(camp));
             } else {
-                System.out.println("You have successfully registered as an attendee for the camp: " + camp.getName());
+                System.out.println("You have successfully registered as an attendee for the camp: " + camp.getName(camp));
             }
         }
     }
@@ -121,7 +129,7 @@ public class Student {
     public void withdrawFromCamp(Camp camp) {
         if (registeredCamps.remove(camp)) {
             camp.removeAttendee(this);;
-            System.out.println("You have successfully withdrawn from the camp: " + camp.getName());
+            System.out.println("You have successfully withdrawn from the camp: " + camp.getName(camp));
         } else {
             System.out.println("You are not registered for this camp.");
         }
@@ -137,14 +145,17 @@ public class Student {
         return true;
     }
 
-    private boolean isCampDateClash(Camp camp1, Camp camp2) {
-    	LocalDate startDate1 = LocalDate.parse("camp1.getStartDate(camp1)");
-    	LocalDate endDate1 = LocalDate.parse("camp1.getEndDate(camp1)");
-    	LocalDate startDate2 = LocalDate.parse("camp2.getStartDate(camp2)");
-    	LocalDate endDate2 = LocalDate.parse("camp2.getEndDate(camp2)");
 
-    	return (startDate1.isBefore(endDate2) && endDate1.isAfter(startDate2));
+
+    private boolean isCampDateClash(Camp camp1, Camp camp2) {
+        LocalDate startDate1 = LocalDate.parse((CharSequence) camp1.getStartDate(camp1));
+        LocalDate endDate1 = LocalDate.parse((CharSequence) camp1.getEndDate(camp1));
+        LocalDate startDate2 = LocalDate.parse((CharSequence) camp2.getStartDate(camp1));
+        LocalDate endDate2 = LocalDate.parse((CharSequence) camp2.getEndDate(camp2));
+
+        return (startDate1.isBefore(endDate2) && endDate1.isAfter(startDate2));
     }
+
     
 
     public void submitEnquiry(Camp camp, String message) {
@@ -161,7 +172,7 @@ public class Student {
             System.out.println("You have no enquiries.");
         } else {
             for (Enquiry enquiry : enquiries) {
-                System.out.println("Enquiry Camp: " + enquiry.getCamp().getName());
+                System.out.println("Enquiry Camp: " + enquiry.getCamp().getName(enquiry.getCamp()));
                 System.out.println("Enquiry Message: " + enquiry.getMessage());
                 System.out.println();
             }

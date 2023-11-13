@@ -1,3 +1,4 @@
+package src.basic;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Date;
@@ -5,6 +6,10 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.stream.Collectors;
+import java.lang.Math;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Staff {
     // Staff attributes
@@ -36,45 +41,70 @@ public class Staff {
         // Validate the new password against some password policies if needed
         this.password = newPassword;
     }
-
+    
     // Method to create a new camp
     public void createCamp(String campName, Date startDate, Date endDate, 
                            Date registrationCloseDate, String userGroup, 
-                           String location, int totalSlots, String description) {
+                           String location, int totalSlots, int campCommitteeSlots ,String description, String userID, String facualty) {
         // Create a new camp object with given details
-        Camp newCamp = new Camp(campName, startDate, endDate, registrationCloseDate, userGroup, 
-                                location, totalSlots, description, this.userId);
+        Staff staffInCharge = new Staff (userID, facualty);
+
+        Camp newCamp = new Camp(campName,startDate,endDate,registrationCloseDate,
+        userGroup, location,totalSlots,campCommitteeSlots,
+        description, staffInCharge);
+
         // Add the new camp to the list of created camps
         this.createdCamps.add(newCamp);
     }
 
     // Method to edit an existing camp
-    public void editCamp(Camp camp, String campName, Date startDate, Date endDate, 
-                         Date registrationCloseDate, String userGroup, 
-                         String location, int totalSlots, String description) {
+    public void editCamp(Camp camp, String newCampName, Date newStartDate, Date newEndDate,
+                         String newRegistrationClosingDate, String newUserGroup, String newLocation,
+                         Integer newTotalSlots, Integer newCampCommitteeSlots, String newDescription) throws ParseException {
         // Check if the camp exists and if the staff has permission to edit it
-        if (this.createdCamps.contains(camp) && camp.getStaffInCharge().equals(this.userId)) {
-            // Update the camp details using setters provided by the Camp class
-            camp.setCampDetails(campName, startDate, endDate, registrationCloseDate, userGroup, 
-                                location, totalSlots, description);
+        if (this.createdCamps.contains(camp) && camp.getStaffInCharge(camp).equals(this.userId)) {
+            // Update the camp attributes if the corresponding parameter is not null
+            if (newCampName != null) {
+                camp.setName(newCampName);
+            }
+            if (newStartDate != null) {
+                camp.setStartDate(newStartDate);
+            }
+            if (newEndDate != null) {
+                camp.setEndDate(newEndDate);
+            }
+            if (newRegistrationClosingDate != null) {
+                camp.getRegistrationClosingDate(new SimpleDateFormat("yyyy-MM-dd").parse(newRegistrationClosingDate));
+            }
+            if (newUserGroup != null) {
+                camp.setUserGroup(newUserGroup);
+            }
+            if (newLocation != null) {
+                camp.setLocation(newLocation);
+            }
+            if (newTotalSlots != null) {
+                camp.setTotalSlots(newTotalSlots);
+            }
+            if (newCampCommitteeSlots != null) {
+                camp.setCampCommitteeSlots(newCampCommitteeSlots);
+            }
+            if (newDescription != null) {
+                camp.setDescription(newDescription);
+            }
+
+            
         }
     }
+   
 
     // Method to delete a camp
     public void deleteCamp(Camp camp) {
         // Remove the camp from the list if the staff is in charge of it
-        if (camp.getStaffInCharge().equals(this.userId)) {
+        if (camp.getStaffInCharge(camp).equals(this.userId)) {
             this.createdCamps.remove(camp);
         }
     }
 
-    // Method to toggle the visibility of a camp
-    public void toggleCampVisibility(Camp camp, boolean isVisible) {
-        // Set the visibility of the camp if the staff is in charge of it
-        if (camp.getStaffInCharge().equals(this.userId)) {
-            camp.setVisibility(isVisible);
-        }
-    }
 
     // Method to view all camps created by this staff member
     public List<Camp> viewCreatedCamps() {
@@ -94,7 +124,7 @@ public class Staff {
     public void approveSuggestion(Suggestion suggestion) {
         // Approve the suggestion if it pertains to a camp managed by this staff
         if (this.createdCamps.contains(suggestion.getCamp()) && suggestion.getCamp().getStaffInCharge().equals(this.userId)) {
-            suggestion.setApproved(true);
+            suggestion.setAccepted(true);
         }
     }
 
@@ -103,7 +133,7 @@ public class Staff {
         // Check if the staff member has created the camp
         if (this.createdCamps.contains(camp)) {
             // Generate the report based on the filter type (attendee, camp committee, etc.)
-            List<Participant> filteredParticipants = camp.getParticipants().stream()
+            List<Student> filteredParticipants = camp.getParticipants().stream()
                 .filter(p -> filterType.equals("all") || p.getRole().equals(filterType))
                 .collect(Collectors.toList());
 
@@ -124,11 +154,11 @@ public class Staff {
     }
 }
 
-    private void generateTextReport(Camp camp, List<Participant> participants) {
+    private void generateTextReport(Camp camp, List<Student> participants) {
         String reportName = "Camp_Report_" + camp.getName() + ".txt";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(reportName))) {
             writer.write("Report for Camp: " + camp.getName() + "\n");
-        for (Participant participant : participants) {
+        for (Student participant : participants) {
             writer.write(participant.toString() + "\n");
         }
     } catch (IOException e) {
@@ -177,4 +207,4 @@ public class Staff {
     }
 }
 
-/
+}

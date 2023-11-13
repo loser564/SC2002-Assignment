@@ -1,3 +1,4 @@
+package src.basic;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,27 +20,18 @@ public class CampCommittee extends Student {
 	private List<Camp> overseenCamps;
 	private List<Enquiry> enquiries;
 	private List<Suggestion> suggestions;
-	private List<createdCamps> createdCamps;
-
-	/**
-	 * Constructor
-	 */
-
-	public CampCommittee(String aUserID, String aPassword, String aFaculty) {
-		super(aUserID, aPassword, aFaculty);
+	
+	public CampCommittee(String UserId, String Password, String Name, String Faculty, boolean IsCampCommittee) {
+		super(UserId, Password, Name, Faculty, IsCampCommittee);
 		this._points = 0;
-		this.registeredCamps = new ArrayList<Camp>();
-		this.overseenCamps = new ArrayList<Camp>();
-		this.enquiries = new ArrayList<Enquiry>();
-		this.suggestions = new ArrayList<Suggestion>();	
+		this.registeredCamps = new ArrayList<>();
+		this.overseenCamps = new ArrayList<>();
+		this.enquiries = new ArrayList<>();
+		this.suggestions = new ArrayList<>();
 	}
-	//A camp committee member can get one point for each enquiry replied and each 
-	// suggestion given. One extra point will be granted for each accepted suggestion. 
-	/**
-	 * Method to add points
-	 */
-	public void addPoints(int aNewPoints) {
-		this._points += aNewPoints;
+
+	public void addPoints(int aPoints) {
+		this._points += aPoints;
 	}
 
 	public int getPoints() {
@@ -73,18 +65,25 @@ public class CampCommittee extends Student {
 	 * method to read suggestions
 	 */
 	public void readSuggestions() {
-		for (Suggestion s : this.suggestions) {
-			System.out.println(s.toString());
+		for (Suggestion suggestion : suggestions) {
+			String suggestionText = suggestion.getSuggestionText();
+			// Do something with suggestionText
 		}
 	}
+	
 
 	public void editSuggestion(Suggestion aSuggestion, String aNewSuggestion) {
-		aSuggestion.setSuggestion(aNewSuggestion);
+		if (aSuggestion != null) {
+			aSuggestion.setSuggestionText(aNewSuggestion);
+		}
 	}
-
+	
 	public void deleteSuggestion(Suggestion aSuggestion) {
-		this.suggestions.remove(aSuggestion);
+		if (aSuggestion != null) {
+			this.suggestions.remove(aSuggestion);
+		}
 	}
+	
 	
 	//A camp committee member can submit suggestions for changes to camp details to
 	//staff.
@@ -114,23 +113,23 @@ public class CampCommittee extends Student {
         return;
     }
 
-    List<Participant> participants = aCamp.getParticipants();
-    String reportFileName = aCamp.getCampName() + "_report." + format;
+    List<Student> participants = aCamp.getAttendees();
+    String reportFileName = aCamp.getName(aCamp) + "_report." + format;
 
     try (FileWriter writer = new FileWriter(reportFileName)) {
         if (format.equals("txt")) {
-            writer.write("Camp Name: " + aCamp.getCampName() + "\n");
-            writer.write("Camp Date: " + aCamp.getCampDate() + "\n");
+            writer.write("Camp Name: " + aCamp.getName(aCamp) + "\n");
+            writer.write("Camp Start Date: " + aCamp.getStartDate(aCamp) + "\n");
             writer.write("Participants:\n");
 
-            for (Participant p : participants) {
+            for (Student p : participants) {
                 if (filter.equals("all") || (filter.equals("attendee") && p instanceof Student) || (filter.equals("camp committee") && p instanceof CampCommittee)) {
                     writeParticipantDetails(writer, format, aCamp, p.getName(), p.getRole());
                 }
             }
         } else if (format.equals("csv")) {
             writer.write("Camp Name, Camp Date, Participant Name, Participant Role\n");
-            for (Participant p : participants) {
+            for (Student p : participants) {
                 if (filter.equals("all") || (filter.equals("attendee") && p instanceof Student) || (filter.equals("camp committee") && p instanceof CampCommittee)) {
                     writeParticipantDetails(writer, format, aCamp, p.getName(), p.getRole());
                 }
@@ -142,18 +141,22 @@ public class CampCommittee extends Student {
     }
 }
 
-	private void writeParticipantDetails(FileWriter writer, String format, Camp aCamp, String participantRole) throws IOException{
+	private void writeParticipantDetails(FileWriter writer, String format, Camp aCamp, String participantName, String participantRole) throws IOException{
 		if (format.equals("txt")){
 			writer.write("Name: " + participantName + "\n");
 			writer.write("Role: " + participantRole + "\n");
 		}
 		else if(format.equals("csv")){
-			writer.write(aCamp.getCampName() + "," + aCamp.getCampDetails() + "," + participantName + "," + participantRole + "\n");
+			// defined details as attendess, date and location
+			writer.write(aCamp.getName(aCamp) + "," + aCamp.getStartDate(aCamp) +
+			"," + aCamp.getEndDate(aCamp) + "," + aCamp.getLocation(aCamp) +
+			"," + aCamp.getUserGroup(aCamp) +
+			 "," + participantName + "," + participantRole + "\n");
 		}
 	}
 
 	private boolean	isCampCreator(Camp aCamp){
-		return aCamp.getCreator().equals(this);
+		return aCamp.getStaffInCharge(aCamp).equals(this);
 	}
 
 	// A camp committee member can view the details of the camp that he/she has
