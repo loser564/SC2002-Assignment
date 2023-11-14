@@ -9,7 +9,8 @@ import java.time.LocalDate;
 
 
 
-public class Student {
+public class Student extends User {
+    
     private String userId;
     private String password;
     private String name;
@@ -19,6 +20,7 @@ public class Student {
     private List<Camp> registeredCamps;
 
     public Student(String userId, String password, String name, String faculty, boolean isCampCommittee) {
+        super(userId, faculty);
         this.userId = userId;
         this.password = password;
         this.name = name;

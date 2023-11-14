@@ -10,96 +10,125 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
+import src.basic.Staff;
 
 
 
-public class StaffView {
-    // global variables
-    static int choice;
-    static int choice2;
-    private static Scanner sc = new Scanner(System.in);
+public class StaffView extends MainView {
+        // global variables
+        static int choice;
+        static int choice2;
+        private static Scanner sc = new Scanner(System.in);
 
-    public static void main(String[] args) {
-        Staff staff = new Staff(userID, faculty));  // Create an instance of the Staff class
-		choice = 0;
-        System.out.println("1. Create, edit, delete and edit visibility camp");
-        System.out.println("2. View all camps");
-        System.out.println("3. See camps I have created");
-        System.out.println("4. View and reply to enquiries");
-        System.out.println("5. View and approve suggestions");
-        System.out.println("6. Generate Reports")
-
-        switch (choice) {
-            // create, edit, delete and edit visibility camp
-            case 1:
-                do{
-                System.out.println("1. Create new camp");
-                System.out.println("2. Edit camp");
-                System.out.println("3. Delete camp");
-                System.out.println("4. Edit camp visibility");
-                System.out.println("5. Quit");
-
-                choice2 = sc.nextInt();
-                switch (choice2) {
-                    case 1:
-                        createNewCamp(staff);
-                        break;
-                    case 2:
-                        System.out.println("Enter camp name: ");
-                        String campEntered = sc.next();
-                        Camp campEdit = staff.getCampByName(campEntered);
-                        if (campEdit != null){
-                            editCreatedCamp(staff, campEdit);
-                        }
-                        else{
-                            System.out.println("Camp not found");
-                        }
-                        break;
-                    case 3:
-                        System.out.println("Enter camp name: ");
-                        String campToDelete = sc.next();
-                        Camp campDelete = staff.getCampByName(campToDelete);
-                        if (campDelete != null){
-                            deleteCamp(staff, campDelete);
-                        }
-                        else{
-                            System.out.println("Camp not found");
-                        }
-                        break;
-                    case 4:
-                        System.out.println("Enter camp name: ");
-                        String campToEditVisibility = sc.next();
-                        Camp campEditVisibility = staff.getCampByName(campToEditVisibility);
-                        if (campEditVisibility != null){
-                            editVisibility(staff, campEditVisibility);
-                        }
-                        else{
-                            System.out.println("Camp not found");
-                        }
-                        break;
-                    case 5:
-                        break;
-                    default:
-                        System.out.println("Invalid input. Please enter a number between 1 and 3");
-                        break;
-                        
-                }
-                break;
-            } while (choice2 != 4);
-            
-            // view all camps
-            case 2:
-                System.out.println("Viewing all camps...");
-                staff.printCreatedCamps();
-                break;
-            case 3:
-
-
-
-        
+        public void printMenu() {
+            choice = 0;
+            System.out.println("1. Create, edit, delete and edit visibility camp");
+            System.out.println("2. View all camps");
+            System.out.println("3. See camps I have created");
+            System.out.println("4. View and reply to enquiries");
+            System.out.println("5. View and approve suggestions");
+            System.out.println("6. Generate Reports");
+            System.out.println("7. Exit Staff View");
         }
-    }
+    
+    public void campStuff(Staff staff){
+        do{
+            System.out.println("1. Create new camp");
+            System.out.println("2. Edit camp");
+            System.out.println("3. Delete camp");
+            System.out.println("4. Edit camp visibility");
+            System.out.println("5. Quit");
 
+            choice2 = sc.nextInt();
+            switch (choice2) {
+                case 1:
+                    createNewCamp(staff);
+                    break;
+                case 2:
+                    System.out.println("Enter camp name: ");
+                    String campEntered = sc.next();
+                    Camp campEdit = staff.getCampByName(campEntered);
+                    if (campEdit != null){
+                        editCreatedCamp(staff, campEdit);
+                    }
+                    else{
+                        System.out.println("Camp not found");
+                    }
+                    break;
+                case 3:
+                    System.out.println("Enter camp name: ");
+                    String campToDelete = sc.next();
+                    Camp campDelete = staff.getCampByName(campToDelete);
+                    if (campDelete != null){
+                        deleteCamp(staff, campDelete);
+                    }
+                    else{
+                        System.out.println("Camp not found");
+                    }
+                    break;
+                case 4:
+                    System.out.println("Enter camp name: ");
+                    String campToEditVisibility = sc.next();
+                    Camp campEditVisibility = staff.getCampByName(campToEditVisibility);
+                    if (campEditVisibility != null){
+                        editVisibility(staff, campEditVisibility);
+                    }
+                    else{
+                        System.out.println("Camp not found");
+                    }
+                    break;
+                case 5:
+                    break;
+                default:
+                    System.out.println("Invalid input. Please enter a number between 1 and 3");
+                    break;
+                    
+            }
+            break;
+        } while (choice2 != 4);
+    }
+        
+    
+    public void viewApp(){
+        do{
+            printMenu();
+            choice = sc.nextInt();
+            Staff staff = new Staff(userID,faculty);
+            switch(choice){
+                case 1:
+                    campStuff(staff);
+                    break;
+                case 2:
+                    // print all camps
+                    System.out.println("Viewing all camps...");
+                    break;
+                case 3:
+                    // print camps created by me
+                    System.out.println("Viewing camps created by me...");
+                    staff.printCreatedCamps();
+                    break;
+                case 4:
+                    // view and reply to enquiries
+                    
+                    break;
+                case 5:
+                    // view and approve suggestions
+                    
+                    break;
+                case 6:
+                    // generate reports
+                    
+                    break;
+                case 7:
+                    break;
+                default:
+                    System.out.println("Invalid input. Please enter a number between 1 and 7");
+                    break;
+            }
+        } while (choice != 7);
+
+    }       
+            
     private static void createNewCamp(Staff staff) {
         int campCommitteeSlots = 0;
         System.out.println("Enter camp name: ");

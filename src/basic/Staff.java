@@ -11,7 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Staff {
+public class Staff extends User {
     // Staff attributes
     private String userId; // NTU network user ID
     private String password; // Staff's password
@@ -20,9 +20,9 @@ public class Staff {
 
     // Constructor
     public Staff(String userId, String faculty) {
+        super(userId, faculty); // Call the constructor of the parent class
         this.userId = userId;
-        this.password = "password"; // default password
-        this.faculty = faculty;
+        this.password = password; // default password for all users
         this.createdCamps = new ArrayList<>(); // initialize with no camps
     }
 

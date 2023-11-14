@@ -1,5 +1,8 @@
 package src.view; 
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
+import src.basic.Camp;
 
 public class StudentView extends MainView {
     public StudentView(){
