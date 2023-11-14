@@ -20,7 +20,7 @@ public class Camp {
     private int campCommitteeSlots; // Max 10
     private String description;
     private String userID;  // Automatically tied to the id of the staff who created it
-
+    private boolean isVisible;  // Whether the camp is visible to students
 
     private List<Student> attendees;  // List of students registered for the camp as attendees
     private List<Student> committeeMembers;  // List of students registered for the camp as committee
@@ -43,6 +43,7 @@ public class Camp {
         this.campCommitteeSlots = campCommitteeSlots;
         this.description = description;
         this.staffInCharge = staffInCharge;
+        this.isVisible = true;
 
         this.attendees = new ArrayList<>();
         this.committeeMembers = new ArrayList<>();
@@ -193,6 +194,10 @@ public class Camp {
         return camp.registrationClosingDate;
     }
 
+    public void setRegistrationClosingDate(Date registrationClosingDate){
+        this.registrationClosingDate = registrationClosingDate;
+    }
+
     public String getLocation(Camp camp){
         return camp.location;
     }
@@ -204,5 +209,16 @@ public class Camp {
     public Staff getStaffInCharge(Camp camp){
         return camp.staffInCharge;
     }
+
+    public boolean isVisible(Camp camp){
+        return isVisible;
+    }
+
+    public void toggleVisibility() {
+        isVisible = !isVisible;  // Toggle the visibility status
+        System.out.println("Camp visibility toggled. New status: " + (isVisible ? "Visible" : "Hidden"));
+    }
+
+    
 
 }

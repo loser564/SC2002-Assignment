@@ -54,7 +54,16 @@ public class Staff {
         description, staffInCharge);
 
         // Add the new camp to the list of created camps
-        this.createdCamps.add(newCamp);
+        newCamp.addCamp(newCamp);
+    }
+
+    public Camp getCampByName(String campName){
+        for (Camp camp : this.createdCamps){
+            if (camp.getName(camp).equals(campName)){
+                return camp;
+            }
+        }
+        return null;
     }
 
     // Method to edit an existing camp
@@ -74,7 +83,7 @@ public class Staff {
                 camp.setEndDate(newEndDate);
             }
             if (newRegistrationClosingDate != null) {
-                camp.getRegistrationClosingDate(new SimpleDateFormat("yyyy-MM-dd").parse(newRegistrationClosingDate));
+                camp.setRegistrationClosingDate(new SimpleDateFormat("yyyy-MM-dd").parse(newRegistrationClosingDate));
             }
             if (newUserGroup != null) {
                 camp.setUserGroup(newUserGroup);
@@ -105,11 +114,30 @@ public class Staff {
         }
     }
 
+    // method to toggle visibility of camp to be "on" or "off"
+    public void toggleCampVisibility(Camp camp) {
+        // Toggle the visibility of the camp if the staff is in charge of it
+        if (camp.getStaffInCharge(camp).equals(this.userId)) {
+            camp.toggleVisibility();
+        }
+    }
+
 
     // Method to view all camps created by this staff member
     public List<Camp> viewCreatedCamps() {
         // Return the list of camps created by this staff
         return this.createdCamps;
+    }
+
+    public void printCreatedCamps() {
+        System.out.println("List of created camps:");
+        for (Camp camp : this.createdCamps) {
+            System.out.println("Camp Name: " + camp.getName(camp));
+            System.out.println("Start Date: " + camp.getStartDate(camp));
+            System.out.println("End Date: " + camp.getEndDate(camp));
+            // Add other relevant information to print...
+            System.out.println(); // Add a newline between camps for better readability
+        }
     }
 
     // Method to reply to enquiries
