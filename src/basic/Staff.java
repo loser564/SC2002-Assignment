@@ -235,4 +235,8 @@ public class Staff extends User {
     }
 }
 
+    public String getName() {
+        return null;
+    }
+
 }

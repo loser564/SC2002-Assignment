@@ -15,6 +15,9 @@ import src.basic.Staff;
 
 
 public class StaffView extends MainView {
+        public StaffView(){
+            super();
+        }
         // global variables
         static int choice;
         static int choice2;
@@ -28,7 +31,8 @@ public class StaffView extends MainView {
             System.out.println("4. View and reply to enquiries");
             System.out.println("5. View and approve suggestions");
             System.out.println("6. Generate Reports");
-            System.out.println("7. Exit Staff View");
+            System.out.println("7. Change password");
+            System.out.println("8. Exit Staff View");
         }
     
     public void campStuff(Staff staff){

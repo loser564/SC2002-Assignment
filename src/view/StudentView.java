@@ -16,6 +16,7 @@ public class StudentView extends MainView {
         System.out.println("3. View and Withdraw from Registered Camps");
         System.out.println("4. Change Password");
         System.out.println("5. Logout");
+        
     }
 
     @Override

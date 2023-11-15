@@ -181,6 +181,27 @@ public class Camp {
     public List<Camp> getListOfCamps(){
     	return listOfCamps;
     }
+
+    public void viewCampDetails(User user){
+        if(user instanceof Staff || user instanceof CampCommittee){
+            System.out.println("Camp Name: " + campName);
+            System.out.println("Start Date: " + startDate);
+            System.out.println("End Date: " + endDate);
+            System.out.println("Registration Closing Date: " + registrationClosingDate);
+            System.out.println("User Group: " + userGroup);
+            System.out.println("Location: " + location);
+            System.out.println("Total Slots: " + totalSlots);
+            System.out.println("Camp Committee Slots: " + campCommitteeSlots);
+            System.out.println("Description: " + description);
+            System.out.println("Staff in Charge: " + staffInCharge.getName());
+            System.out.println("Attendees: " + attendees);
+            System.out.println("Committee Members: " + committeeMembers);
+
+        }
+        else{
+            System.out.println("You do not have access to this information.")
+        }
+    }       
     
     public List<Student> getAttendees() {
         return attendees;
