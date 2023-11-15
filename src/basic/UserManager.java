@@ -33,6 +33,12 @@ public class UserManager {
         return users.get(userID);
     }
 
+
+    // original
+    // public boolean authenticate(String userID, String password) {
+    //     User user = getUser(userID);
+    //     return user != null && 
+    // }
     public String authenticate(String userID, String password) {
         User user = getUser(userID);
     
@@ -42,8 +48,7 @@ public class UserManager {
                     return "Student";
                 case CAMP_COMMITTEE:
                     return "CampCommitteeMember";
-                case STAFF:
-                    return "Staff";
+                
                 default:
                     return "Invalid";
             }
