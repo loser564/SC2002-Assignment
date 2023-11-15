@@ -18,9 +18,10 @@ public class UserManager {
         while ((line = reader.readLine()) != null) {
             String[] parts = line.split(",");
             if (parts.length >= 3) {
-                // parts[0] is Name, parts[1] is Email, parts[2] is Faculty, parts[3] is Password if present
+                // parts[0] is Name, parts[1] is Email, parts[2] is Faculty, parts[3] is Password if present, parts[4] is Role
                 String userID = parts[1].substring(0, parts[1].indexOf('@'));
                 String faculty = parts[2];
+                UserRole role = UserRole.valueOf(parts[4].toUpperCase());
                 User newUser = new User(userID, faculty); // Create a new user with the userID and faculty
                 users.put(userID, newUser); // Add the user to the map
             }
@@ -32,10 +33,25 @@ public class UserManager {
         return users.get(userID);
     }
 
-    public boolean authenticate(String userID, String password) {
+    public String authenticate(String userID, String password) {
         User user = getUser(userID);
-        return user != null && user.validatePassword(password);
+    
+        if (user != null && user.validatePassword(password)) {
+            switch (user.getRole()) {
+                case STUDENT:
+                    return "Student";
+                case CAMP_COMMITTEE:
+                    return "CampCommitteeMember";
+                case STAFF:
+                    return "Staff";
+                default:
+                    return "Invalid";
+            }
+        } else {
+            return "Invalid";
+        }
     }
+    
 
     public void changePassword(String userID, String newPassword) {
         User user = getUser(userID);
