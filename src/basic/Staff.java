@@ -22,7 +22,7 @@ public class Staff extends User {
     public Staff(String userId, String faculty) {
         super(userId, faculty); // Call the constructor of the parent class
         this.userId = userId;
-        this.password = password; // default password for all users
+        this.password = "password"; // default password for all users
         this.createdCamps = new ArrayList<>(); // initialize with no camps
     }
 
@@ -68,59 +68,54 @@ public class Staff extends User {
 
     // Method to edit an existing camp
     public void editCamp(Camp camp, String newCampName, Date newStartDate, Date newEndDate,
-                         String newRegistrationClosingDate, String newUserGroup, String newLocation,
-                         Integer newTotalSlots, Integer newCampCommitteeSlots, String newDescription) throws ParseException {
-        // Check if the camp exists and if the staff has permission to edit it
-        if (this.createdCamps.contains(camp) && camp.getStaffInCharge(camp).equals(this.userId)) {
-            // Update the camp attributes if the corresponding parameter is not null
-            if (newCampName != null) {
-                camp.setName(newCampName);
-            }
-            if (newStartDate != null) {
-                camp.setStartDate(newStartDate);
-            }
-            if (newEndDate != null) {
-                camp.setEndDate(newEndDate);
-            }
-            if (newRegistrationClosingDate != null) {
-                camp.setRegistrationClosingDate(new SimpleDateFormat("yyyy-MM-dd").parse(newRegistrationClosingDate));
-            }
-            if (newUserGroup != null) {
-                camp.setUserGroup(newUserGroup);
-            }
-            if (newLocation != null) {
-                camp.setLocation(newLocation);
-            }
-            if (newTotalSlots != null) {
-                camp.setTotalSlots(newTotalSlots);
-            }
-            if (newCampCommitteeSlots != null) {
-                camp.setCampCommitteeSlots(newCampCommitteeSlots);
-            }
-            if (newDescription != null) {
-                camp.setDescription(newDescription);
-            }
-
-            
+                     String newRegistrationClosingDate, String newUserGroup, String newLocation,
+                     Integer newTotalSlots, Integer newCampCommitteeSlots, String newDescription) throws ParseException {
+    // Check if the camp exists and if the staff has permission to edit it
+    if (this.createdCamps.contains(camp) && this.userId.equals(camp.getUserId())) {
+        // Update the camp attributes if the corresponding parameter is not null
+        if (newCampName != null) {
+            camp.setName(newCampName);
+        }
+        if (newStartDate != null) {
+            camp.setStartDate(newStartDate);
+        }
+        if (newEndDate != null) {
+            camp.setEndDate(newEndDate);
+        }
+        if (newRegistrationClosingDate != null) {
+            camp.setRegistrationClosingDate(new SimpleDateFormat("yyyy-MM-dd").parse(newRegistrationClosingDate));
+        }
+        if (newUserGroup != null) {
+            camp.setUserGroup(newUserGroup);
+        }
+        if (newLocation != null) {
+            camp.setLocation(newLocation);
+        }
+        if (newTotalSlots != null) {
+            camp.setTotalSlots(newTotalSlots);
+        }
+        if (newCampCommitteeSlots != null) {
+            camp.setCampCommitteeSlots(newCampCommitteeSlots);
+        }
+        if (newDescription != null) {
+            camp.setDescription(newDescription);
         }
     }
-   
+}
 
-    // Method to delete a camp
     public void deleteCamp(Camp camp) {
-        // Remove the camp from the list if the staff is in charge of it
-        if (camp.getStaffInCharge(camp).equals(this.userId)) {
+    // Remove the camp from the list if the staff is in charge of it
+        if (this.userId.equals(camp.getUserId())) {
             this.createdCamps.remove(camp);
-        }
     }
+}
 
-    // method to toggle visibility of camp to be "on" or "off"
     public void toggleCampVisibility(Camp camp) {
-        // Toggle the visibility of the camp if the staff is in charge of it
-        if (camp.getStaffInCharge(camp).equals(this.userId)) {
+    // Toggle the visibility of the camp if the staff is in charge of it
+        if (this.userId.equals(camp.getUserId())) {
             camp.toggleVisibility();
-        }
     }
+}
 
 
     // Method to view all camps created by this staff member
@@ -142,16 +137,22 @@ public class Staff extends User {
 
     // Method to reply to enquiries
     public void replyToEnquiry(Enquiry enquiry, String replyMessage) {
-        // Set the reply message to the enquiry if the staff is in charge of the camp in question
-        if (this.createdCamps.contains(enquiry.getCamp()) && enquiry.getCamp().getStaffInCharge().equals(this.userId)) {
+        // Check if this staff member's ID matches the userID of the staff who created the camp
+        if (this.userId.equals(enquiry.getCamp().getUserId())) {
+            // Set the reply message to the enquiry
             enquiry.setReply(replyMessage);
+            // Optionally, update the status of the enquiry to indicate it has been responded to
+            // Assuming the status is a boolean where true indicates a responded status
+            enquiry.setStatus(true);
         }
     }
+
 
     // Method to approve suggestions
     public void approveSuggestion(Suggestion suggestion) {
         // Approve the suggestion if it pertains to a camp managed by this staff
-        if (this.createdCamps.contains(suggestion.getCamp()) && suggestion.getCamp().getStaffInCharge().equals(this.userId)) {
+        if (this.createdCamps.contains(suggestion.getCamp()) && 
+            this.userId.equals(suggestion.getCamp().getUserId())) {
             suggestion.setAccepted(true);
         }
     }
@@ -161,7 +162,7 @@ public class Staff extends User {
         // Check if the staff member has created the camp
         if (this.createdCamps.contains(camp)) {
             // Generate the report based on the filter type (attendee, camp committee, etc.)
-            List<Student> filteredParticipants = camp.getParticipants().stream()
+            List<Student> filteredParticipants = camp.getAttendees().stream()
                 .filter(p -> filterType.equals("all") || p.getRole().equals(filterType))
                 .collect(Collectors.toList());
 
@@ -183,9 +184,9 @@ public class Staff extends User {
 }
 
     private void generateTextReport(Camp camp, List<Student> participants) {
-        String reportName = "Camp_Report_" + camp.getName() + ".txt";
+        String reportName = "Camp_Report_" + camp.getName(camp) + ".txt";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(reportName))) {
-            writer.write("Report for Camp: " + camp.getName() + "\n");
+            writer.write("Report for Camp: " + camp.getName(camp) + "\n");
         for (Student participant : participants) {
             writer.write(participant.toString() + "\n");
         }
@@ -195,13 +196,13 @@ public class Staff extends User {
     }
 }
 
-    private void generateCSVReport(Camp camp, List<Participant> participants) {
-        String reportName = "Camp_Report_" + camp.getName() + ".csv";
+    private void generateCSVReport(Camp camp, List<Student> participants) {
+        String reportName = "Camp_Report_" + camp.getName(camp) + ".csv";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(reportName))) {
             writer.write("Name,Role,Email,Status\n"); // CSV header
-            for (Participant participant : participants) {
+            for (Student participant : participants) {
                 writer.write(String.format("%s,%s,%s,%s\n", participant.getName(), participant.getRole(),
-                    participant.getEmail(), participant.getStatus()));
+                    participant.getUserId(), camp.getUserGroup(camp)));
         }
         }catch (IOException e) {
             System.out.println("An error occurred while writing the CSV report.");
@@ -210,33 +211,24 @@ public class Staff extends User {
 }
 
     // Method to generate a performance report for camp committee members
-    public void generatePerformanceReport(Camp camp) {
-        // Check if the camp is managed by this staff and then generate report
-        if (this.createdCamps.contains(camp)) {
-            // Assuming we have a list of camp committee members and their performance metrics
-            List<CommitteeMember> committeeMembers = camp.getCommitteeMembers();
-            String reportName = "Camp_Committee_Performance_Report_" + camp.getName() + ".csv";
-        
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(reportName))) {
-                writer.write("Member Name,Points,Replies,Suggestions Accepted\n"); // CSV header
-                for (CommitteeMember member : committeeMembers) {
-                    // Calculating points as per your performance logic, here's a placeholder
-                    int points = member.getRepliesCount() + member.getSuggestionsCount() + 
-                             (member.getSuggestionsAccepted() * 2); // extra point for accepted suggestion
-                    writer.write(String.format("%s,%d,%d,%d\n", member.getName(), points,
-                        member.getRepliesCount(), member.getSuggestionsAccepted()));
+   public void generatePerformanceReport(Camp camp) {
+    // Check if the camp is managed by this staff and then generate report
+    if (this.createdCamps.contains(camp)) {
+        List<CampCommittee> committeeMembers = camp.getCommitteeMembers();
+        String reportName = "Camp_Committee_Performance_Report_" + camp.getName(camp) + ".csv";
+    
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(reportName))) {
+            writer.write("Member Name, Points\n"); // CSV header
+            for (CampCommittee member : committeeMembers) {
+                int points = member.getPoints(); // Use the points attribute
+                writer.write(String.format("%s,%d\n", member.getName(), points));
             }
-            } catch (IOException e) {
-                System.out.println("An error occurred while writing the performance report.");
-                e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing the performance report.");
+            e.printStackTrace();
         }
-    }   else {
-            System.out.println("Camp not managed by staff: " + this.userId);
+    } else {
+        System.out.println("Camp not managed by staff: " + this.userId);
     }
 }
-
-    public String getName() {
-        return null;
-    }
-
 }
