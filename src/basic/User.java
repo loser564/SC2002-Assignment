@@ -1,36 +1,42 @@
+package src.basic;
 public class User {
-	/**
-	 * The user's ID
-	 */
-	protected String _password;
-	/**
-	 * The user's password
-	 */
-	protected String _faculty;
-	/**
-	 * Attributes
-	 */
-	protected String _userID;
+    private String userID;
+    private String password;
+    private String faculty;
+    private UserRole role;
 
-	/**
-	 * Constructor
-	 */
-	public User(String aUserID, String aPassword, String aFaculty) {
-		throw new UnsupportedOperationException();
-	}
+    public User(String userID, String faculty) {
+        this.userID = userID;
+        this.password = "password"; // default password for all users
+        this.faculty = faculty;
+        this.role = role;
+    }
 
-	/**
-	 * Method to change password
-	 */
-	public void changePassword(String aNewPassword) {
-		throw new UnsupportedOperationException();
-	}
+    // Getters and setters as needed
+    public String getUserID() {
+        return userID;
+    }
 
-	public String getFaculty() {
-		return this._faculty;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public String getUserID() {
-		return this._userID;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getFaculty() {
+        return faculty;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    // Method to check if the provided password matches the user's password
+    public boolean validatePassword(String password) {
+        return this.password.equals(password);
+    }
+
+    
 }

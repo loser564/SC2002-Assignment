@@ -1,5 +1,8 @@
 package src.view; 
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
+import src.basic.Camp;
 
 public class StudentView extends MainView {
     public StudentView(){
@@ -13,6 +16,7 @@ public class StudentView extends MainView {
         System.out.println("3. View and Withdraw from Registered Camps");
         System.out.println("4. Change Password");
         System.out.println("5. Logout");
+        
     }
 
     @Override

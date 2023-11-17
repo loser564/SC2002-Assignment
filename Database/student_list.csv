@@ -1,0 +1,12 @@
+Name;Email;Faculty;Password;Role
+CHERN ;YCHERN@e.ntu.edu.sg;SCSE;password;STUDENT
+KOH ;KOH1@e.ntu.edu.sg;ADM;password;STUDENT
+BRANDON ;BR015@e.ntu.edu.sg;EEE;password;STUDENT
+CALVIN ;CT113@e.ntu.edu.sg;SCSE;password;STUDENT
+CHAN;YCN019@e.ntu.edu.sg;NBS;password;CAMP_COMMITTEE
+DENISE;DL007@e.ntu.edu.sg;SCSE;password;CAMP_COMMITTEE
+DONG;DON84@e.ntu.edu.sg;ADM;password;STUDENT
+ERNEST;ELI34@e.ntu.edu.sg;EEE;password;STUDENT
+LEE ;LE51@e.ntu.edu.sg;SCSE;password;STUDENT
+LIU ;SL22@e.ntu.edu.sg;NBS;password;STUDENT
+RAWAL;AKY013@e.ntu.edu.sg;SSS;password;STUDENT
