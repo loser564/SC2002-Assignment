@@ -1,6 +1,10 @@
 package src.view;
 
 import java.util.Scanner;
+import src.basic.Staff;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class StaffView extends MainView {
     public StaffView() {
@@ -38,6 +42,28 @@ public class StaffView extends MainView {
                     switch (choice2) {
                         case 1:
                             // Create camp
+							SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy"); // Date formatter
+							System.out.println("Enter camp name: ");
+							String campName = sc.nextLine();
+							System.out.println("Enter start date (dd-MM-yyyy): ");
+							String startDateStr = sc.nextLine();
+							Date startDate = sdf.parse(startDateStr);
+							System.out.println("Enter end date (dd-MM-yyyy): ");
+							String endDateStr = sc.nextLine();
+							Date endDate = sdf.parse(endDateStr);
+							System.out.println("Enter registration closing date (dd-MM-yyyy): ");
+							String registrationCloseDateStr = sc.nextLine();
+							Date registrationCloseDate = sdf.parse(registrationCloseDateStr);
+							System.out.println("Enter user group: ");
+							String userGroup = sc.nextLine();
+							System.out.println("Enter location: ");
+							String location = sc.nextLine();
+							System.out.println("Enter total slots: ");
+							int totalSlots = sc.nextInt();
+							System.out.println("Enter description: ");
+							String description = sc.nextLine();
+							Staff.createCamp(campName, startDate, endDate, registrationCloseDate, userGroup, 
+											 location, totalSlots, description);
                             break;
 
                         case 2:

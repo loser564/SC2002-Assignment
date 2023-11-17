@@ -43,7 +43,7 @@ public class Staff extends User {
     }
     
     // Method to create a new camp
-    public void createCamp(String campName, Date startDate, Date endDate, 
+    public static void createCamp(String campName, Date startDate, Date endDate, 
                            Date registrationCloseDate, String userGroup, 
                            String location, int totalSlots, String description) {
         // Create a new camp object with given details
