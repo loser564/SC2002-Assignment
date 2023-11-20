@@ -1,0 +1,17 @@
+Name	Email	Faculty	Password	Role
+Madhukumar	HUKUMAR@ntu.edu.sg	SCSE	password	STAFF
+Alexei 	OURIN@ntu.edu.sg	ADM	password	STAFF
+Chattopadhyay	UPAM@ntu.edu.sg	EEE	password	STAFF
+Datta	ANWIT@ntu.edu.sg	SCSE	password	STAFF
+Arvind 	ARVI@ntu.edu.sg	NBS	password	STAFF
+CHERN 	YCHERN@e.ntu.edu.sg	SCSE	password	STUDENT
+KOH 	KOH1@e.ntu.edu.sg	ADM	password	STUDENT
+BRANDON 	BR015@e.ntu.edu.sg	EEE	password	STUDENT
+CALVIN 	CT113@e.ntu.edu.sg	SCSE	password	STUDENT
+CHAN	YCN019@e.ntu.edu.sg	NBS	password	CAMP_COMMITTEE
+DENISE	DL007@e.ntu.edu.sg	SCSE	password	CAMP_COMMITTEE
+DONG	DON84@e.ntu.edu.sg	ADM	password	STUDENT
+ERNEST	ELI34@e.ntu.edu.sg	EEE	password	STUDENT
+LEE 	LE51@e.ntu.edu.sg	SCSE	password	STUDENT
+LIU 	SL22@e.ntu.edu.sg	NBS	password	STUDENT
+RAWAL	AKY013@e.ntu.edu.sg	SSS	password	STUDENT
