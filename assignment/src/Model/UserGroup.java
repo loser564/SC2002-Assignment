@@ -1,4 +1,4 @@
-package Model;
+package assignment.src.Model;
 
 public enum UserGroup {
     ALL,
