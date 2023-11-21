@@ -4,30 +4,14 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import Model.*;
-public class StaffView {
-    
-    public static void staffView(String userID, String password){
+public class StaffView extends MainView{
 
-        Staff staff = new Staff();
+    public StaffView(String UserID, String password){
+        super(UserID, password);
+    }
 
-        Scanner sc = new Scanner(System.in);
-
-        boolean pwChange = false;
-
-        ArrayList<Staff> staffs = UserManager.readStaff();
-
-        for (Staff s : staffs) {
-            if (s.getStaffID().equals(userID)) {
-                staff = s;
-            }
-        }
-
-    
-
-    int choice = 0;
-
-    do{
-        System.out.println("Welcome to the Staff Menu!");
+    @Override
+    public void printMenu(){
         System.out.println("1. Change Password");
         System.out.println("2. Add a new camp");
         System.out.println("3. View my camps");
@@ -42,15 +26,20 @@ public class StaffView {
         System.out.println("12. Generate report about camps");
         System.out.println("13. Generate performance report about camp committee");
         System.out.println("14. Logout");
+    }
 
-        System.out.println("Please enter your choice: ");
-
+    @Override
+    public void viewApp(){
+        int choice = 0;
+        Scanner sc = new Scanner(System.in);
+        Staff staff = new Staff();
+        String password = staff.getPassword();
+        boolean pwChange = false;
         try{
-
+            printMenu();
             choice = sc.nextInt();
             sc.nextLine();
             StaffFunctions staffFunc = new StaffFunctions();
-
             switch(choice){
                 case 1: // change password
                         System.out.println("Change Password...");
@@ -76,6 +65,7 @@ public class StaffView {
                         else{
                             pwChange = staff.changePassword(newPassword);
                             System.out.println("Password changed successfully!");
+                            pwChange = true;
                         }
                         break;
 
@@ -157,18 +147,9 @@ public class StaffView {
                 default:
                     System.out.println("Invalid input! Please enter a number from 1 to 14.");
                     break;
-                
-
-                    
-                        
             }
-
-        }  catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-
-    }  while (choice != 14);
-}
-
+        } catch (Exception e){
+            System.out.println("Invalid input! Please enter a number from 1 to 14.");
+        }
+    }
 }

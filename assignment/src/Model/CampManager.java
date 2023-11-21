@@ -5,8 +5,8 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 
 public class CampManager {
-    
-    private static final File campFile = new File("src/Database/Camp.txt");
+    // assignment\src\Database\Camp.txt
+    private static final File campFile = new File("assignment/src/Database/Camp.txt");
 
     public CampManager(){}
 

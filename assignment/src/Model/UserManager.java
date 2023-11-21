@@ -3,8 +3,9 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class UserManager {
-    private static final File studentFile = new File("src/Database/Student.txt");
-    private static final File staffFile = new File("src/Database/Staff.txt");
+    // assignment\src\Database\Student.txt
+    private static final File studentFile = new File("assignment/src/Database/Student.txt");
+    private static final File staffFile = new File("assignment/src/Database/Staff.txt");
 
     public UserManager(){}
 

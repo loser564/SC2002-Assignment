@@ -1,6 +1,8 @@
-package View;
+
 import java.util.Scanner;
 import Model.*;
+import View.StaffView;
+import View.StudentView;
 
 public class CAMs{
     public static void main(String[] args){
@@ -48,12 +50,17 @@ public class CAMs{
                     // System.out.println("User role: " + userRole);
 
                     switch(userRole){
+                        // public StaffView(String UserID, String password){
+                       //         super(UserID, password);
+                        //    }
                         case "student":
-                            StudentView.studentView(userID, password);
+                            StudentView studentView = new StudentView(userID, password);
+                            studentView.viewApp();
                             break;
                         
                         case "staff":
-                            StaffView.staffView(userID, password);
+                            StaffView staffView = new StaffView(userID, password);
+                            staffView.viewApp();
                             break;
 
                         default:

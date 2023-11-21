@@ -4,45 +4,47 @@ import java.util.Scanner;
 import Model.*;
 import java.util.ArrayList;
 
-public class StudentView {
-    public StudentView(){}
+public class StudentView extends MainView {
+    public StudentView(String UserID, String password ){
+        super(UserID, password);
+    }
 
-    public static void studentView(String userID, String password){ 
+    @Override
+    public void printMenu(){
+        System.out.println("1. Change Password");
+        System.out.println("2. View Camps");
+        System.out.println("3. Register for a camp");
+        System.out.println("4. Quit a camp");
+        System.out.println("5. Apply to be a camp committee");
+        System.out.println("6. View registered camps");
+        System.out.println("7. Submit Enquiry");
+        System.out.println("8. Edit and Delete Enquiry");
+        System.out.println("9. Camp Committee Menu");
+        System.out.println("10. Logout");
+    }
+
+    @Override
+    public void viewApp(){
+        int choice = 0;
         Scanner sc = new Scanner(System.in);
         Student student = new Student();
+        String password = student.getPassword();
+        String userID = student.getUserID();
         boolean pwChange = false;
-        ArrayList<Student> students = UserManager.readStudents();
-        
-        for(Student s: students){
-            if(s.getStudentID().equals(userID)){
-                student = s;
-            }
-        }
-        int choice = 0;
-        do{
-            System.out.println("Welcome to the Student Menu!");
-            System.out.println("1. Change Password");
-            System.out.println("2. View Camps");
-            System.out.println("3. Register for a camp");
-            System.out.println("4. Quit a camp");
-            System.out.println("5. Apply to be a camp committee");
-            System.out.println("6. View registered camps");
-            System.out.println("7. Submit Enquiry");
-            System.out.println("8. Edit and Delete Enquiry");
-            System.out.println("9. Camp Committee Menu");
-            System.out.println("10. Logout");
-
-            System.out.println("Please enter your choice: ");
-
-            try{
-                choice = sc.nextInt();
-                sc.nextLine();
-                StudentFunctions studentFunc = new StudentFunctions();
-
-                switch(choice){
+        try{
+            printMenu();
+            choice = sc.nextInt();
+            sc.nextLine();
+            StudentFunctions studentFunc = new StudentFunctions();
+            switch(choice){
                     case 1: // change password
                         System.out.println("Changing password ....");
-                        studentFunc.changePassword(student,password);
+                        if(pwChange == false)
+                            pwChange = studentFunc.changePassword(student,password);
+                        else{
+                            System.out.println("You have already changed your password!");
+                            System.out.println("Returning to Student Menu...");
+                        }
                         break;
                     case 2: // view camps
                         System.out.println("Viewing camps available ....");
@@ -117,15 +119,14 @@ public class StudentView {
                         System.out.println("Invalid input! Please enter a number from 1 to 9.");
                         break;
                         
-                }
+                    } 
             } catch(Exception e){
                 System.out.println("Invalid input! Please enter a number from 1 to 10.");
                 sc.nextLine();
             }
-        } while(choice != 9); 
+        
         
     sc.close();
-    }   
 
-
+    }
 }

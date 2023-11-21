@@ -15,27 +15,32 @@ public class StudentFunctions {
         String oldPassword = sc.nextLine();
         if(!oldPassword.equals(password)){
             System.out.println("Old password is incorrect!");
+            
         }
-        System.out.println("Enter new password: ");
-        String newPassword = sc.nextLine();
-        System.out.println("Confirm new password: ");
-        String confirmNewPassword = sc.nextLine();
-        System.out.println("Changing password ....");
-        if(!newPassword.equals(confirmNewPassword)){
-            System.out.println("New password does not match!");
 
-        }
-        else if(newPassword.equals(password)){
-            System.out.println("New password cannot be the same as old password!");
-        }
-        else if(oldPassword.isEmpty() || newPassword.isEmpty()){
-            System.out.println("Password cannot be empty!");
-        }
         else{
-            boolean pwChange = student.changePassword(newPassword);
-            System.out.println("Password changed successfully!");
-            return pwChange;
+            System.out.println("Enter new password: ");
+            String newPassword = sc.nextLine();
+            System.out.println("Confirm new password: ");
+            String confirmNewPassword = sc.nextLine();
+            System.out.println("Changing password ....");
+            if(!newPassword.equals(confirmNewPassword)){
+                System.out.println("New password does not match!");
+
+            }
+            else if(newPassword.equals(password)){
+                System.out.println("New password cannot be the same as old password!");
+            }
+            else if(oldPassword.isEmpty() || newPassword.isEmpty()){
+                System.out.println("Password cannot be empty!");
+            }
+            else{
+                boolean pwChange = student.changePassword(newPassword);
+                System.out.println("Password changed successfully!");
+                return pwChange;
+            }
         }
+        
         return false;
     }
     
@@ -106,6 +111,7 @@ public class StudentFunctions {
     }
 
     public void applyCampCommittee(Student student) throws IOException{
+        
         ArrayList<Camp> camps = student.viewCamps();
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter camp name to apply for camp committee: ");
