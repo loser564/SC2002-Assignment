@@ -4,9 +4,9 @@ import java.util.Scanner;
 import Model.*;
 import java.util.ArrayList;
 
-public class StudentView extends MainView {
+public class StudentView implements MainView {
     public StudentView(String UserID, String password ){
-        super(UserID, password);
+        
     }
 
     @Override
