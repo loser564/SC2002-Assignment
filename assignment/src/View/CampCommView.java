@@ -1,6 +1,8 @@
 package View;
 
 import Model.*;
+import Model.Camp.Camp;
+import Model.CampComm.CampCommitee;
 
 import java.util.Scanner;
 

@@ -4,7 +4,14 @@ import Model.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import Model.CampCommitee;
+
+import Model.Camp.*;
+import Model.CampComm.*;
+import Model.EnquirySuggestion.*;
+import Model.Student.*;
+import Model.User.*;
+
+
 
 public class CampCommFunctions {
     public CampCommFunctions(){}

@@ -1,5 +1,11 @@
 package View;
-import Model.*;
+import Model.Camp.*;
+import Model.CampComm.*;
+import Model.EnquirySuggestion.*;
+import Model.Student.*;
+import Model.User.*;
+import Model.Staff.*;
+
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;

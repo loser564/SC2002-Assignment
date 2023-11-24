@@ -1,6 +1,12 @@
 package View;
-import Model.*;
+import Model.Camp.*;
+import Model.CampComm.*;
+import Model.EnquirySuggestion.*;
+import Model.Student.*;
+import Model.User.*;
+
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -46,34 +52,64 @@ public class StudentFunctions {
     
 
     public void viewCamps(Student student) throws IOException{
-        ArrayList<Camp> camps = student.viewCamps();
-        System.out.println("List of camps:");
-        for(Camp c: camps){
-            student.printCampDetails(c);
+        System.out.println("Debug: viewCamps");
+        ArrayList<Camp> camps;
+        
+        // ArrayList<Camp> camps = student.viewCamps();
+        try {
+            System.out.println("Debug: viewCamps");
+            camps = student.viewCamps();
+            System.out.println("List of camps:");
+            for(Camp c: camps){
+                student.printCampDetails(c);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        System.out.println("Press enter to return to Student Menu...");
+        while(true){
+            Scanner sc = new Scanner(System.in);
+            String enter = sc.nextLine();
+            if(enter.isEmpty()){
+                // sc.close();
+                return;
+                // return to student menu
+            }
         }
     }
 
     public void registerForCamp(Student student) throws IOException{
-        ArrayList<Camp> camps = student.viewCamps();
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter camp name to register: ");
-        String campName = sc.nextLine();
-        Camp camp = null;
-        for(Camp c: camps){
-            if(c.getCampName().equals(campName)){
-                camp = c;
-                break;
-            }
-        }
-        if(camp == null){
-            System.out.println("Camp does not exist!");
-        }
-        else{
-            student.registerCamp(camp);
-            System.out.println("Camp registered successfully!");
-        }
+        System.out.println("Debug: studentID: " + student.getUserID());
+        ArrayList<Camp> camps;
+        try {
+            camps = student.viewCamps();
 
-        sc.close();
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Enter camp name to register: ");
+            String campName = sc.nextLine();
+            Camp camp = null;
+            for(Camp c: camps){
+                if(c.getCampName().equals(campName)){
+                    camp = c;
+                    break;
+                }
+            }
+            if(camp == null){
+                System.out.println("Camp does not exist!");
+                return;
+            }
+            else{
+                System.out.println("Found camp: " + camp.getCampName() + ", attempting to register...");
+                System.out.println("Student ID: " + student.getUserID());
+                student.registerCamp(camp, student.getUserID());
+                // System.out.println("Camp registered successfully!");
+                return;
+            }
+            // sc.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void quitCamp(Student student) throws IOException{
@@ -93,19 +129,22 @@ public class StudentFunctions {
             }
             if(camp == null){
                 System.out.println("Camp does not exist!");
+                return;
                 
             }
             else{
                 student.quitCamp(camp);
                 System.out.println("Camp quit successfully!");
+                return;
                 
             }
         }
         else{
             System.out.println("Camp not quit!");
+            return;
             
         }
-        sc.close();
+        // sc.close();
        
 
     }
@@ -125,19 +164,40 @@ public class StudentFunctions {
         }
         if(camp == null){
             System.out.println("Camp does not exist!");
+            return;
+        }
+        else if(camp.getCampCommittee().contains(student)){
+            System.out.println("You are already a camp committee!");
+            return;
+        }
+        else if(student.getRemainderCampCommSlots() == 0){
+            System.out.println("Camp committee slots are full!");
+            return;
         }
         else{
             student.applyCampCommittee(camp);
             System.out.println("Camp committee applied successfully!");
+            return;
         }
-        sc.close();
+        // sc.close();
     }
 
     public void viewRegisteredCamps(Student student) throws IOException{
-        ArrayList<Camp> camps = student.viewRegisteredCamps();
+        ArrayList<Camp> campsRegistered;
+        campsRegistered = student.viewRegisteredCamps();
         System.out.println("List of registered camps:");
-        for(Camp c: camps){
+        for(Camp c: campsRegistered){
             student.printCampDetails(c);
+        }
+        System.out.println("Press enter to return to Student Menu...");
+        while(true){
+            Scanner sc = new Scanner(System.in);
+            String enter = sc.nextLine();
+            if(enter.isEmpty()){
+                // sc.close();
+                return;
+                // return to student menu
+            }
         }
     }
 
@@ -153,7 +213,7 @@ public class StudentFunctions {
         ArrayList<Enquiry> enquiries = student.viewAllEnquiries();
         System.out.println("List of own enquiries:");
         for(Enquiry e: enquiries){
-            if(e.getStudentID().equals(student.getStudentID())){
+            if(e.getStudentID().equals(student.getUserID())){
                 student.printEnquiryDetails(e);
             }
         }

@@ -1,6 +1,7 @@
 
 import java.util.Scanner;
 import Model.*;
+import Model.User.UserLogin;
 import View.StaffView;
 import View.StudentView;
 
@@ -55,12 +56,12 @@ public class CAMs{
                         //    }
                         case "student":
                             StudentView studentView = new StudentView(userID, password);
-                            studentView.viewApp();
+                            studentView.viewApp(userID, password);
                             break;
                         
                         case "staff":
                             StaffView staffView = new StaffView(userID, password);
-                            staffView.viewApp();
+                            staffView.viewApp(userID, password);
                             break;
 
                         default:
