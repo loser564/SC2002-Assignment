@@ -81,7 +81,8 @@ public class CAMs{
                 
 
             }
-
+            else if(choice==2) ;
+            else System.out.println("Invalid input!");
         } while(choice != 2);
 
         System.out.println("Thank you for using CAMs!");
