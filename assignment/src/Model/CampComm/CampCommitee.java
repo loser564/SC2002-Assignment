@@ -2,33 +2,32 @@ package Model.CampComm;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import Model.EnquirySuggestion.Enquiry;
 import Model.EnquirySuggestion.EnquiryManager;
 import Model.EnquirySuggestion.Suggestion;
 import Model.EnquirySuggestion.SuggestionManager;
+import Model.Staff.EnquiryInterfaceStaff;
 import Model.Camp.Camp;
 import Model.Camp.CampManager;
 import Model.Student.Student;
+import Model.Student.StudentManager;
 import Model.Student.StudentReport;
 import Model.User.UserManager;
 import Model.User.UserRole;
 
-public class CampCommitee extends Student{
-    private String campCommID; // same as student ID
+public class CampCommitee extends Student implements EnquiryInterfaceStaff{
     private int points;
 
     public CampCommitee(){}
 
 
-
-    public CampCommitee(String userID, String password, String faculty, UserRole role){
-        this.campCommID = userID;
-        this.setPassword(password);
-        this.setFaculty(faculty);
+    public CampCommitee(String name, String userID, String password, String faculty, UserRole role) {
+        super(name, userID, password, faculty, role);
         this.points = 0;
-        setRole(role); // set role to STUDENT
     }
+    
 
 ////////////////////////////////////// CAMP FUNCTIONS //////////////////////////////////////
 
@@ -58,14 +57,15 @@ public class CampCommitee extends Student{
     }
 
 
-    public String getCampCommID() { return campCommID; }
-
-    public void setCampCommID(String campCommID) { this.campCommID = campCommID; }
 
 
 ////////////////////////////////////// SUGGESTION FUNCTIONS //////////////////////////////////////
     public void makeSuggestions(String message) throws IOException{
-        Suggestion suggestion = new Suggestion(this.campCommID, message, false);
+        if(this.getUserID() == null){
+            System.out.println("Camp Committee ID not found!");
+            return;
+        }
+        Suggestion suggestion = new Suggestion(this.getUserID(), message, false);
         SuggestionManager.writeSuggestion(suggestion);
         
     }
@@ -74,8 +74,9 @@ public class CampCommitee extends Student{
         ArrayList<Suggestion> suggestions = SuggestionManager.readSuggestions();
         ArrayList<Suggestion> mySuggestions = new ArrayList<>();
         for(Suggestion s: suggestions){
-            if(s.getStudentID().equals(this.campCommID)){
-                System.out.println(s);
+            if(s.getStudentID().equals(this.getUserID())){
+                System.out.println("Debug: suggestion added");
+                mySuggestions.add(s);       
             }
         }
 
@@ -92,9 +93,11 @@ public class CampCommitee extends Student{
 
     public void printSuggestionDetails(Suggestion suggestion){
         System.out.println("Suggestion ID: " + suggestion.getSuggestionID());
-        System.out.println("Suggestion: " + suggestion.getSuggestionText());
+        System.out.println("Student ID: " + suggestion.getStudentID());
+        System.out.println("Suggestion Text: " + suggestion.getSuggestionText());
         System.out.println("Accepted: " + (suggestion.getStatus() ? "Yes" : "No"));
     }
+    
 
     //////////////////////////////////////// ENQUIRY FUNCTIONS //////////////////////////////////////
 
@@ -130,7 +133,7 @@ public class CampCommitee extends Student{
 
     }
 
-    public void printEnquiryDetails(Enquiry enquiry) throws IOException{
+    public void printEnquiryDetails(Enquiry enquiry) {
         System.out.println("Enquiry ID: " + enquiry.getEnquiryID());
         System.out.println("Enquiry Student ID: " + enquiry.getStudentID());
         System.out.println("Enquiry Title: " + enquiry.getTitle());
@@ -155,25 +158,22 @@ public class CampCommitee extends Student{
 
 ///////////////////////////////// REPORT FUNCTIONS //////////////////////////////////////
 
-    public void generateReport(String facultyFilter, boolean isCampCommFilter, Camp camp, String campName)
+    public void generateReport(String facultyFilter, boolean isCampCommFilter, Camp camp, String campName) throws IOException
     {
         ArrayList<Student> students = UserManager.readStudents();
-        StudentReport report = new StudentReport(students);
-
-        ArrayList<Student> filteredStudents = (ArrayList<Student>) report.filter(facultyFilter, isCampCommFilter, camp, campName);
-
-        try{
-            report.generateReport(filteredStudents);
-            System.out.println("Report generated successfully!");
-        } catch (IOException e){
-            System.out.println("Error generating report: " + e.getMessage());
+        ArrayList<Student> registeredStudents = new ArrayList<Student>();
+        for (Student s: students){
+            String studentID = s.getStudentID();
+            if (StudentManager.readStudentFile(campName, studentID)){
+                registeredStudents.add(s);
+            }
         }
         
+        StudentReport.generateReport(registeredStudents, isCampCommFilter, facultyFilter);
+
+
+
     }
-
-
-
-    
 
     
 }

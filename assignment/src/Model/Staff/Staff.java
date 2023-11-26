@@ -11,7 +11,9 @@ import Model.Camp.Camp;
 import Model.Camp.CampManager;
 import Model.Camp.CampStatus;
 import Model.CampComm.CampCommitee;
+import Model.CampComm.CampCommiteeManager;
 import Model.Student.Student;
+import Model.Student.StudentManager;
 import Model.Student.StudentReport;
 import Model.User.User;
 import Model.User.UserGroup;
@@ -24,7 +26,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-public class Staff extends User {
+public class Staff extends User implements SuggestionInterface, EnquiryInterfaceStaff {
     private String staffID;
     private String name;
 
@@ -39,9 +41,13 @@ public class Staff extends User {
     }
 
     // getters and setters
-    public String getStaffID() { return this.staffID; }
+    public String getStaffID() { return staffID; }
     
     public void setStaffID(String staffID) { this.staffID = staffID; }
+
+    public String getName() { return name; }
+
+    public void setName(String name) { this.name = name; }
 
     public UserRole getUserRole() { return super.getUserRole(); }
 
@@ -70,7 +76,7 @@ public class Staff extends User {
         camp.setMaxCapacity(maxCapacity);
         camp.setCampCommSlots(campCommitteeSlots);
         camp.setCampDescription(description);
-        camp.setStaffID(getStaffID());
+        camp.setStaffID(getUserID());
 
         CampManager.writeNewCamps(camp);
         System.out.println("Camp created successfully!");
@@ -244,16 +250,18 @@ public class Staff extends User {
 
     // view camps made by Staff 
     public ArrayList<Camp> viewOwnCamps(){
-        ArrayList<Camp> ownCamps = new ArrayList<>();
-        ArrayList<Camp> camps = CampManager.readCamps();
-        System.out.println("Staff ID: " + getStaffID());
-        for(Camp c: camps){
-            System.out.println("Camp Staff ID: " + c.getStaffID());
-            if(c.getStaffID().equals(getStaffID())){
-                ownCamps.add(c);
+        
+        ArrayList<Camp> camps = new ArrayList<>();
+        // System.out.println("Debug: viewCamps entered");
+        
+        ArrayList<Camp> allCamps = CampManager.readCamps();
+        // System.out.println("Debug: after readCamp");
+        for(Camp c: allCamps){
+            if(c.getStaffID().equals(getUserID())){
+                camps.add(c);
             }
         }
-        return ownCamps;
+        return camps;
     }
 
     public void printCampDetails(Camp camp){
@@ -335,7 +343,7 @@ public class Staff extends User {
     }
 
 
-    public void printEnquiryDetails(Enquiry enquiry) throws IOException{
+    public void printEnquiryDetails(Enquiry enquiry){
         System.out.println("Enquiry ID: " + enquiry.getEnquiryID());
         System.out.println("Enquiry Student ID: " + enquiry.getStudentID());
         System.out.println("Enquiry Title: " + enquiry.getTitle());
@@ -384,7 +392,7 @@ public class Staff extends User {
     
 
 
-    public void printSuggestionDetails(Suggestion suggestion) throws IOException{
+    public void printSuggestionDetails(Suggestion suggestion){
         System.out.println("Suggestion ID: " + suggestion.getSuggestionID());
         System.out.println("Suggestion Student ID: " + suggestion.getStudentID());
         System.out.println("Suggestion Camp Name: " + suggestion.getCamp().getCampName());
@@ -396,41 +404,43 @@ public class Staff extends User {
 
     ///////////////////////////////////////     REPORTS     ///////////////////////////////////////
     
-    public void generateReport(String facultyFilter, boolean isCampCommFilter, Camp camp, String campName)
+    public void generateReport(String facultyFilter, boolean isCampCommFilter, Camp camp, String campName) throws IOException
     {
         ArrayList<Student> students = UserManager.readStudents();
-        StudentReport report = new StudentReport(students);
-
-        ArrayList<Student> filteredStudents = (ArrayList<Student>) report.filter(facultyFilter, isCampCommFilter, camp, campName);
-
-        try{
-            report.generateReport(filteredStudents);
-            System.out.println("Report generated successfully!");
-        } catch (IOException e){
-            System.out.println("Error generating report: " + e.getMessage());
+        ArrayList<Student> registeredStudents = new ArrayList<Student>();
+        for (Student s: students){
+            String studentID = s.getStudentID();
+            if (StudentManager.readStudentFile(campName, studentID)){
+                registeredStudents.add(s);
+            }
         }
         
+        StudentReport.generateReport(registeredStudents, isCampCommFilter, facultyFilter);
+
+
+
     }
 
-    public static void generatePerformanceReport(Staff staff, Camp camp, String filePath) {
-        ArrayList<CampCommitee> committeeMembers = camp.getCampCommittee();
-
-        try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filePath)))) {
-            writer.println("Camp Name: " + camp.getCampName());
-            writer.println("Staff ID: " + staff.getStaffID());
-            writer.println("Points Report:");
-
-            for (CampCommitee committeeMember : committeeMembers) {
-                writer.println("Committee Member: " + committeeMember.getCampCommID());
-                writer.println("Points: " + committeeMember.getPoints());
-                writer.println();
+    public static void generatePerformanceReport(Staff staff, String campName) throws IOException {
+        ArrayList<Student> students = UserManager.readStudents();
+        ArrayList<CampCommitee> committeeMembers = new ArrayList<>();
+    
+        for (Student s : students) {
+            String studentID = s.getStudentID();
+            if (s instanceof CampCommitee && CampCommiteeManager.readCampCommFile(campName, studentID)) {
+                System.out.println("Committee Member: " + studentID);
+                committeeMembers.add((CampCommitee) s); // Safe cast because of the instanceof check
             }
-
-            System.out.println("Performance report has been written to: " + filePath);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+        System.out.println("Debug: report generation");
+        PerformanceReport.generateReport(committeeMembers, campName);
     }
+    
+    
+    
 
+    
+
+   
     
 }

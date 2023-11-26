@@ -7,12 +7,13 @@ import Model.EnquirySuggestion.Enquiry;
 import Model.EnquirySuggestion.EnquiryManager;
 import Model.Camp.Camp;
 import Model.Camp.CampManager;
+import Model.CampComm.CampCommitee;
 import Model.CampComm.CampCommiteeManager;
 import Model.User.User;
 import Model.User.UserGroup;
 import Model.User.UserRole;
 
-public class Student extends User{
+public class Student extends User implements CampInterface, EnquiryInterfaceStudent, CampCommInterface{
     private String studentID;
     private boolean isCampCommittee;
     private String name;
@@ -52,18 +53,30 @@ public class Student extends User{
 
     public void setCampCommittee(boolean isCampCommittee) { this.isCampCommittee = isCampCommittee; }
 
-    public boolean getCampCommittee() { return isCampCommittee; }
+    public boolean getCampCommittee() {
+        ArrayList<Camp> camps = CampManager.readCamps();
+        for(Camp c: camps){
+            if(CampCommiteeManager.readCampCommFile(c.getCampName(), getUserID())){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void applyCampCommittee(Camp camp) throws IOException{
         ArrayList<Camp> camps = CampManager.readCamps();
+        System.out.println("Debug: applyCampCommittee entered");
+        System.out.println("Debug: isCampCommittee: " + isCampCommittee);
         if(!isCampCommittee){
+            System.out.println("Debug: You are not a camp committee!");
             if(camp.getCampCommSlots() > 0){
+                System.out.println("Debug: Camp committee slots available!");
                 camp.setCampCommSlots(camp.getCampCommSlots() -1);
                 // camps.add(camp);
                 // CampManager.writeCamps(camp);
-                // CampCommitee commiteeMember = new CampCommitee(this.getStudentID(), this.getPassword(), this.getFaculty(), UserRole.CAMP_COMMITTEE);
+                CampCommitee commiteeMember = new CampCommitee(this.getStudentID(), this.getPassword(), this.getFaculty(), name, UserRole.CAMP_COMMITTEE);
                 // // add ID to camp committee list
-                // camp.getCampCommittee().add(commiteeMember);
+                camp.getCampCommittee().add(commiteeMember);
                 CampCommiteeManager.writeCampCommitee(camps, camp.getCampName(), this.getUserID());
                 isCampCommittee = true;
 
@@ -141,20 +154,14 @@ public class Student extends User{
         }
         // alls good, register
 
-        camp.getRegisteredStudents().add(this);
-        // System.out.println("Debug: c.getRegisteredStudents(): " + camp.getRegisteredStudents());
-        System.out.println("Camp registered successfully!");
-        int registerations = camp.getNumberOfRegisteredStudents();
-        camp.setNumberOfRegisteredStudents(registerations + 1);
-        System.out.println("Student ID: " + studentID);
-        StudentManager.writeStudentFile(camps, camp.getCampName(), studentID);
+            camp.getRegisteredStudents().add(this);
+            // System.out.println("Debug: c.getRegisteredStudents(): " + camp.getRegisteredStudents());
+            System.out.println("Camp registered successfully!");
+            int registerations = camp.getNumberOfRegisteredStudents();
+            camp.setNumberOfRegisteredStudents(registerations + 1);
+            System.out.println("Student ID: " + studentID);
+            StudentManager.writeStudentFile(camps, camp.getCampName(), this.getUserID());
 
-
-
-        
-
-
-        
     
         
     }
@@ -165,8 +172,10 @@ public class Student extends User{
         ArrayList<Camp> allCamps = CampManager.readCamps();
         
         for(Camp c: allCamps){
-            boolean inCamp = StudentManager.readStudentFile(allCamps, c.getCampName(), this.studentID);
+            boolean inCamp = StudentManager.readStudentFile(c.getCampName(), this.getUserID());
+            System.out.println(inCamp);
             if (inCamp){
+                
                 registeredCamps.add(c);
             }
 
@@ -184,6 +193,7 @@ public class Student extends User{
         System.out.println("Camp Committee Slots: " + camp.getCampCommSlots());
         System.out.println("Camp Description: " + camp.getCampDescription());
         System.out.println("Camp Staff ID: " + camp.getStaffID());
+        System.out.println("-------------------------------------");
     }
 
     // blacklist student from camp after
@@ -202,14 +212,13 @@ public class Student extends User{
     }
 
     //////////////////// ENQUIRY FUNCTIONS ////////////////////
-    public void submitEnquiry(String title, String message) throws IOException{
-        Enquiry enquiry = new Enquiry(this.getUserID(), title, message, false);
+    public void submitEnquiry(String camp,String title, String message) throws IOException{
+        Enquiry enquiry = new Enquiry(this.getUserID(), camp, title, message, false);
         EnquiryManager.writeEnquiries(enquiry);
     }
 
     public ArrayList<Enquiry> viewAllEnquiries(){
-        ArrayList<Enquiry> enquiries = EnquiryManager.readEnquiries();
-        return enquiries;
+        return EnquiryManager.readEnquiries();
     }
 
     public ArrayList<Enquiry> viewMyEnquiries(){
@@ -223,7 +232,7 @@ public class Student extends User{
         return myEnquiries;
     }
 
-    public void printEnquiryDetails(Enquiry enquiry) throws IOException{
+    public void printEnquiryDetails(Enquiry enquiry){
         System.out.println("Enquiry ID: " + enquiry.getEnquiryID());
         System.out.println("Enquiry Student ID: " + enquiry.getStudentID());
         System.out.println("Enquiry Title: " + enquiry.getTitle());
@@ -239,6 +248,12 @@ public class Student extends User{
 
     public void deleteEnquiry(Enquiry enquiry) throws IOException{
         EnquiryManager.deleteEnquiry(enquiry);
+    }
+
+    @Override
+    public void submitEnquiry(String title, String message) throws IOException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'submitEnquiry'");
     }
 
     

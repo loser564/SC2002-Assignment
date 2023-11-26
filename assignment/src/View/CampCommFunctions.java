@@ -1,6 +1,5 @@
 package View;
 import java.util.Scanner;
-import Model.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -8,8 +7,6 @@ import java.util.ArrayList;
 import Model.Camp.*;
 import Model.CampComm.*;
 import Model.EnquirySuggestion.*;
-import Model.Student.*;
-import Model.User.*;
 
 
 
@@ -28,17 +25,17 @@ public class CampCommFunctions {
         campComm.makeSuggestions(message);
         System.out.println("Suggestion sent successfully!");
         campComm.addPoints(1);
-        sc.close();
+        
     }
 
     public void viewMySuggestions(CampCommitee campComm){
         ArrayList<Suggestion> mySuggestions = campComm.viewMySuggestions();
         for(Suggestion s: mySuggestions){
-            if (s.getStudentID().equals(campComm.getCampCommID())){
-                campComm.printSuggestionDetails(s);
-            }
+            System.out.println("Debug: suggestion printing");
+            campComm.printSuggestionDetails(s); 
         }
     }
+    
 
     public void editMySuggestions(CampCommitee campComm) throws IOException{
         viewMySuggestions(campComm);
@@ -64,7 +61,7 @@ public class CampCommFunctions {
                
             }
         }
-        sc.close();
+        // sc.close();
     }
 
     public void deleteMySuggestions(CampCommitee campComm) throws IOException{
@@ -88,7 +85,7 @@ public class CampCommFunctions {
                
             }
         }
-        sc.close();
+        // sc.close();
     }
 
     public void replyToEnquiry(CampCommitee campComm) throws IOException{
@@ -114,22 +111,22 @@ public class CampCommFunctions {
                 
             }
         }
-        sc.close();
+        // sc.close();
     }
 
-    public void generateReport(CampCommitee campComm, Camp camp, String campName){
+    public void generateReport(CampCommitee campComm, Camp camp, String campName) throws IOException{
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter your filters...");    
         System.out.println("If you do not wish to filter by a certain field, enter null");
         System.out.println("Facualty filter: ");
         String faculty = sc.nextLine();
 
-        System.out.println("Role filter: ");
+        System.out.println("For Camp Committee?(true/false): ");
         Boolean role = sc.nextBoolean();
 
         campComm.generateReport(faculty, role, camp, campName);
 
-        sc.close();
+        // sc.close();
     }
 
 

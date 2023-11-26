@@ -1,11 +1,9 @@
 package View;
 
 import java.util.Scanner;
-import Model.*;
 import Model.Camp.Camp;
+import Model.CampComm.CampCommiteeManager;
 import Model.Student.Student;
-
-import java.util.ArrayList;
 
 public class StudentView implements MainView {
     public StudentView(String UserID, String password ){
@@ -37,116 +35,116 @@ public class StudentView implements MainView {
 
         System.out.println("Welcome " + userID + "!");
         boolean pwChange = false;
-        while(true){
-        try{
-            printMenu();
-            choice = sc.nextInt();
-            StudentFunctions studentFunc = new StudentFunctions();
-            do{
+        boolean loggedIn = true;
+        while(loggedIn == true){
+            try{
+                printMenu();
+                choice = sc.nextInt();
                 sc.nextLine();
-                switch(choice){
-                        case 1: // change password
-                            System.out.println("Changing password ....");
-                            if(pwChange == false){
-                                pwChange = studentFunc.changePassword(student,password);
+                StudentFunctions studentFunc = new StudentFunctions();
+
+                    switch(choice){
+                            case 1: // change password
+                                System.out.println("Changing password ....");
+                                if(pwChange == false){
+                                    pwChange = studentFunc.changePassword(student,password);
+                                    break;
+                                }
+                                else{
+                                    System.out.println("You have already changed your password!");
+                                    System.out.println("Returning to Student Menu...");
+                                    break;
+                                }
+                                
+                            case 2: // view camps
+                                System.out.println("Viewing camps available ....");
+                                studentFunc.viewCamps(student);
                                 break;
-                            }
-                            else{
-                                System.out.println("You have already changed your password!");
-                                System.out.println("Returning to Student Menu...");
+                            case 3: // register for a camp
+                                System.out.println("Registering for a camp ....");
+                                System.out.println("Debug: " + student.getUserID());    
+                                studentFunc.registerForCamp(student);
                                 break;
-                            }
-                            
-                        case 2: // view camps
-                            System.out.println("Viewing camps available ....");
-                            studentFunc.viewCamps(student);
-                            break;
-                        case 3: // register for a camp
-                            System.out.println("Registering for a camp ....");
-                            System.out.println("Debug: " + student.getUserID());    
-                            studentFunc.registerForCamp(student);
-                            break;
-                        case 4: // quit a camp
-                            System.out.println("Quitting a camp ....");
-                            studentFunc.quitCamp(student);
-                            break;
-                        case 5: // apply to be a camp committee
-                            System.out.println("Applying to be a camp committee ....");
-                            studentFunc.applyCampCommittee(student);
-                            break;
-                        case 6: // view registered camps
-                            System.out.println("Viewing registered camps ....");
-                            studentFunc.viewRegisteredCamps(student);
-                            break;
-                        case 7: // view existing enquiries and submit enquiry
-                            System.out.println("Submitting an enquiry ....");
-                            System.out.println("List of existing enquiries:");
-                            studentFunc.viewAllEnquiries(student);
-                            System.out.println("Do you still want to submit an enquiry? (Y/N): ");
-                            char choice2 = sc.nextLine().charAt(0);
-                            if (choice2 == 'Y')
-                                studentFunc.submitEnquiry(student);
-                            else{
-                                System.out.println("Enquiry not submitted!");
-                                System.out.println("Returning to Student Menu...");
+                            case 4: // quit a camp
+                                System.out.println("Quitting a camp ....");
+                                studentFunc.quitCamp(student);
                                 break;
-                            }
-                            break;
-                        case 8: // edit and delete enquiry
-                            System.out.println("Editing and deleting an enquiry ....");
-                            System.out.println("Do you want to edit or delete an enquiry (E/D): ");
-                            char choice3 = sc.nextLine().charAt(0);
-                            if (choice3 == 'E')
-                                studentFunc.editEnquiry(student);
-                            else if (choice3 == 'D')
-                                studentFunc.deleteEnquiry(student);
-                            else{
-                                System.out.println("Invalid input! Please enter E or D.");
-                            }
+                            case 5: // apply to be a camp committee
+                                System.out.println("Applying to be a camp committee ....");
+                                studentFunc.applyCampCommittee(student);
+                                break;
+                            case 6: // view registered camps
+                                System.out.println("Viewing registered camps ....");
+                                studentFunc.viewRegisteredCamps(student);
 
-                            break;
+                                break;
+                            case 7: // view existing enquiries and submit enquiry
+                                System.out.println("Submitting an enquiry ....");
+                                System.out.println("List of existing enquiries:");
+                                studentFunc.viewAllEnquiries(student);
+                                System.out.println("Do you still want to submit an enquiry? (Y/N): ");
+                                char choice2 = sc.nextLine().charAt(0);
+                                if (choice2 == 'Y'){
+                                    studentFunc.submitEnquiry(student);
+                                    System.out.println("Returning to Student Menu...");
+                                    break;
+                                } else {
+                                    System.out.println("Enquiry not submitted!");
+                                    System.out.println("Returning to Student Menu...");
+                                    break;
+                                }
 
-                        case 9: // camp committee menu
-                            System.out.println("Loading Camp Committee Menu...");
-                            // check if student is a camp committee
-                            System.out.println("What camp are you a camp committee member for?");
-                            System.out.print("Enter camp name: ");
-                            String campName = sc.nextLine();
-                            Camp camp = student.getCamp(campName);
-                            if(camp.getCampCommittee().contains(student)){
-                                CampCommView.campCommView(userID, password,camp);
-                            }
-                            else{
-                                System.out.println("You are not a camp committee member for this camp!");
-                            }
-                            break;
+                            case 8: // edit and delete enquiry
+                                System.out.println("Editing and deleting an enquiry ....");
+                                System.out.println("Do you want to edit or delete an enquiry (E/D): ");
+                                char choice3 = sc.nextLine().charAt(0);
+                                if (choice3 == 'E')
+                                    studentFunc.editEnquiry(student);
+                                else if (choice3 == 'D')
+                                    studentFunc.deleteEnquiry(student);
+                                else{
+                                    System.out.println("Invalid input! Please enter E or D.");
+                                }
 
 
-                            
-                        case 10: // logouy
-                            System.out.println("Logging out...");
-                            
-                            break;
-                        default:
-                            System.out.println("Invalid input! Please enter a number from 1 to 9.");
-                            break;
-                            
-                        } 
+                                break;
 
-                        if (choice != 10) {
-                            printMenu();
-                            choice = sc.nextInt();  // Read next choice
-                            sc.nextLine();  // Clear buffer after reading integer
-                        }
-            } while (choice != 10);
-            } catch(Exception e){
-                // System.out.println("Invalid input! Please enter a number from 1 to 10.");
-                return;
-                
-            }
+                            case 9: // camp committee menu
+                                System.out.println("Loading Camp Committee Menu...");
+                                // check if student is a camp committee
+                                System.out.println("What camp are you a camp committee member for?");
+                                System.out.print("Enter camp name: ");
+                                String campName = sc.nextLine();
+                                Camp camp = student.getCamp(campName);
+                                if(CampCommiteeManager.readCampCommFile(campName, student.getUserID())){
+                                    CampCommView campCommView = new CampCommView(userID, password);
+                                    campCommView.viewApp(student.getUserID(), student.getPassword());
+                                }
+                                else{
+                                    System.out.println("You are not a camp committee member for this camp!");
+                                }
+                                break;
+
+
+                                
+                            case 10: // logout
+                                loggedIn = false;
+                                System.out.println("Logging out...");
+                                break;
+                            default:
+                                System.out.println("Invalid input! Please enter a number from 1 to 9.");
+                                break;
+                                
+                            } 
+
+                } catch(Exception e){
+                    System.out.println("An error occurred: " + e.getMessage());
+                    return;
+                    
+                }
         
         
-    sc.close();
+
 
     }
     }

@@ -2,6 +2,7 @@ package Model.Camp;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 import Model.CampComm.CampCommitee;
 import Model.Student.Student;
@@ -132,7 +133,16 @@ public class Camp {
     }
 
     
-    
+     
+@Override
+public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null || getClass() != obj.getClass()) return false;
+    Camp camp = (Camp) obj;
+    return Objects.equals(this.getCampName(), camp.getCampName());
+    // Add more comparison based on other unique identifiers of Camp if needed
+}
+
 
    
     

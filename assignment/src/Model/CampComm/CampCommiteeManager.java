@@ -18,33 +18,30 @@ import Model.Camp.Camp;
 public class CampCommiteeManager {
     private static final File CampCommFile= new File("assignment/src/Database/CampCommitee.txt");
     
-    public static boolean readCampCommFIle(ArrayList<Camp> camps, String CampName, String studentID ) throws IOException {
-        try(BufferedReader reader = new BufferedReader(new FileReader(CampCommFile))){
-            String line = reader.readLine();
-            while (line != null){
-                if(line.trim().isEmpty()){
-                    continue;
+    public static boolean readCampCommFile(String CampName, String studentID)  {
+        try (BufferedReader reader = new BufferedReader(new FileReader(CampCommFile))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.trim().isEmpty()) {
+                    continue; // Skip empty lines and read the next one
                 }
                 String[] tokens = line.split(",");
-                for (Camp camp : camps) {
-                    if (CampName == tokens[0]) {
-                        for(int i = 1; i < tokens.length; i++){
-                            if(tokens[i] == studentID){
-                                return true;
-                            }
-                            else{
-                                return false;
-                            }
+                if (tokens[0].equals(CampName)) { 
+                    for (int i = 1; i < tokens.length; i++) {
+                        if (tokens[i].equals(studentID)) { 
+                            return true; // Found the student ID for the given camp name
                         }
                     }
+                  // At this point, the student ID was not found for this camp name on this line
+                // Loop will continue to the next line automatically
                 }
             }
-        } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace(System.out);
         }
-        return false;
-        
+        return false; // Student ID not found for any line with the given camp name
     }
+    
     
     public static boolean writeCampCommitee(ArrayList<Camp> camps, String campName, String studentID) throws IOException {
     Map<String, Set<String>> campStudents = new HashMap<>();
@@ -77,4 +74,28 @@ public class CampCommiteeManager {
     }
     return true;
 }
+
+
+    public static String findCampForCommitteeMember(String userID) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(CampCommFile))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.trim().isEmpty()) continue;
+
+                String[] tokens = line.split(",");
+                if (tokens.length > 1) {
+                    String campName = tokens[0].trim();
+                    for (int i = 1; i < tokens.length; i++) {
+                        if (tokens[i].trim().equals(userID)) {
+                            return campName; // User ID found; return the camp name
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle exceptions appropriately
+        }
+        return null; // Return null or an appropriate value if the user ID is not found
+    }
+
 }

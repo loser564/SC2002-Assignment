@@ -9,8 +9,10 @@ import java.io.IOException;
 import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,7 +24,7 @@ public class StudentManager {
     // assignment\src\Database\RegisteredStudents.txt
     private static final File studentFile = new File("assignment/src/Database/RegisteredStudents.txt");
     
-    public static boolean readStudentFile(ArrayList<Camp> camps, String CampName, String studentID ) throws IOException {
+    public static boolean readStudentFile( String CampName, String studentID ) throws IOException {
         try(BufferedReader reader = new BufferedReader(new FileReader(studentFile))){
             String line = reader.readLine();
             while (line != null){
@@ -31,18 +33,18 @@ public class StudentManager {
                     continue;
                 }
                 String[] tokens = line.split(",");
-                for (Camp camp : camps) {
-                    if (CampName == tokens[0]) {
-                        for(int i = 1; i < tokens.length; i++){
-                            if(tokens[i] == studentID){
-                                return true;
-                            }
-                            else{
-                                return false;
-                            }
+                if (CampName.equals(tokens[0])) {
+   
+                    for(int i = 1; i < tokens.length; i++){
+              
+                        if(tokens[i].equals(studentID)){
+                          
+                            return true;
                         }
-                    }
+                    }  
                 }
+                line = reader.readLine();
+                
             }
         } catch(Exception e){
             e.printStackTrace(System.out);
@@ -123,6 +125,9 @@ public class StudentManager {
         }
         blackList.put(studentID, true); // true means blacklisted
     }
+
+   
+
 
     
 

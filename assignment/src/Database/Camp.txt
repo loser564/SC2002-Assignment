@@ -1,3 +1,5 @@
 NBS FOP,Fri Jan 06 00:12:00 SGT 2023,Tue Jan 10 00:12:00 SGT 2023,Mon Jan 30 00:11:00 SGT 2023,NBS,Gaia,2000,8,orientation for NBS freshmen,ARVI
-Student Council,Sun Jan 01 00:12:00 SGT 2023,Fri Jan 06 00:12:00 SGT 2023,Mon Jan 30 00:11:00 SGT 2023,ALL,The Hive NTU,100,10,camp for students who want to be in council,null
+Student Council,Sun Jan 01 00:12:00 SGT 2023,Fri Jan 06 00:12:00 SGT 2023,Mon Jan 30 00:11:00 SGT 2023,ALL,The Hive NTU,100,10,camp for students who want to be in council,ARVI
 
+
+Camp1,Mon Jan 01 00:01:00 SGT 2024,Wed Jan 03 00:01:00 SGT 2024,Wed Jan 25 00:12:00 SGT 2023,NBS,gaia,600,8,first camp,ARVI

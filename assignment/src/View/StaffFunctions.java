@@ -1,9 +1,6 @@
 package View;
 import Model.Camp.*;
-import Model.CampComm.*;
 import Model.EnquirySuggestion.*;
-import Model.Student.*;
-import Model.User.*;
 import Model.Staff.*;
 
 import java.io.IOException;
@@ -30,6 +27,10 @@ public class StaffFunctions {
     }
     /////////////// CAMP FUNCTIONS ///////////////  
     public void addCamp(Staff staff){
+        boolean reg = true;
+        while (reg){
+
+        
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter camp name: ");
         String campName = sc.nextLine();
@@ -51,25 +52,76 @@ public class StaffFunctions {
         int campCommitteeSlots = sc.nextInt();
         try{
             staff.createCamp(campName, startDate, endDate, registrationDeadline, userGroup, location, maxCapacity, campCommitteeSlots, description);
+            System.out.println("Camp created successfully!");
         }
         catch(IOException e){
             System.out.println("Error creating camp!");
         }
-    }
 
-    public void viewMyCamps(Staff staff){
-        ArrayList<Camp> camps = staff.viewOwnCamps();
-        System.out.println("List of camps:");
-        for(Camp c: camps){
-            staff.printCampDetails(c);
+        System.out.println("Do you want to add another camp? (Y/N)");
+        String choice = sc.nextLine();
+        if(choice.equals("Y")){
+            addCamp(staff);
+        }
+        else{
+            reg = false;
+            System.out.println("Exiting to main menu...");
+            return; // return to student menu
+            
         }
     }
 
+        
+    }
+
+    public void viewMyCamps(Staff staff) throws IOException{
+        System.out.println("Entering viewMyCamps");
+        ArrayList<Camp> camps;
+        try{
+            camps = staff.viewOwnCamps();
+            System.out.println("List of camps:");
+            for(Camp c: camps){
+                staff.printCampDetails(c);
+            }
+        }
+        catch(Exception e){
+            System.out.println("Error viewing camps!");
+        }
+        System.out.println("Press enter to return to Staff Menu...");
+        while(true){
+            Scanner sc = new Scanner(System.in);
+            String enter = sc.nextLine();
+            if(enter.isEmpty()){
+                // sc.close();
+                return;
+                // return to student menu
+            }
+        }
+        
+    }
+
     public void viewAllCamps(Staff staff){
-        ArrayList<Camp> camps = staff.viewAllCamps();
-        System.out.println("List of camps:");
-        for(Camp c: camps){
-            staff.printCampDetails(c);
+        ArrayList<Camp> camps;
+        camps = staff.viewAllCamps();
+        try{
+            camps = staff.viewAllCamps();
+            System.out.println("List of camps:");
+            for(Camp c: camps){
+                staff.printCampDetails(c);
+            }
+        }
+        catch(Exception e){
+            System.out.println("Error viewing camps!");
+        }
+        System.out.println("Press enter to return to Staff Menu...");
+        while(true){
+            Scanner sc = new Scanner(System.in);
+            String enter = sc.nextLine();
+            if(enter.isEmpty()){
+                // sc.close();
+                return;
+                // return to student menu
+            }
         }
     }
 
@@ -168,8 +220,24 @@ public class StaffFunctions {
     public void viewAllEnquiries(Staff staff) throws IOException{
         ArrayList<Enquiry> myCampEnquiries  = staff.viewMyCampsEnquiries();
         System.out.println("List of enquiries for my camp(s):");
-        for(Enquiry e: myCampEnquiries){
-            staff.printEnquiryDetails(e);
+        try{
+            for(Enquiry e: myCampEnquiries){
+                staff.printEnquiryDetails(e);
+            }
+        }
+        catch(Exception e){
+            System.out.println("Error viewing enquiries!");
+        }
+        
+        while (true){
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Press enter to return to Staff Menu...");
+            String enter = sc.nextLine();
+            if(enter.isEmpty()){
+                // sc.close();
+                return;
+                // return to student menu
+            }
         }
     }
 
@@ -186,8 +254,24 @@ public class StaffFunctions {
     public void viewSuggestions(Staff staff) throws IOException{
         ArrayList<Suggestion> suggestions = staff.viewMyCampsSuggestions();
         System.out.println("List of suggestions:");
-        for(Suggestion s: suggestions){
-            staff.printSuggestionDetails(s);
+        try{
+            for(Suggestion s: suggestions){
+                staff.printSuggestionDetails(s);
+            }
+        }
+        catch(Exception e){
+            System.out.println("Error viewing suggestions!");
+        }
+        
+        while (true){
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Press enter to return to Staff Menu...");
+            String enter = sc.nextLine();
+            if(enter.isEmpty()){
+                // sc.close();
+                return;
+                // return to student menu
+            }
         }
     }
 
@@ -198,7 +282,7 @@ public class StaffFunctions {
         staff.approveSuggestion(suggestionID);
     }
 
-    public void generateReport(Staff staff, Camp camp, String campName){
+    public void generateReport(Staff staff, Camp camp, String campName) throws IOException{
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter your filters...");    
         System.out.println("If you do not wish to filter by a certain field, enter null");
@@ -215,9 +299,7 @@ public class StaffFunctions {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter camp name: ");
         String campName = sc.nextLine();
-        Camp camp = staff.getCamp(campName);
-        String filePath = "src/View/PerformanceReport.txt";
-        Staff.generatePerformanceReport(staff, camp, filePath);
+        Staff.generatePerformanceReport(staff, campName);
     }
 
 

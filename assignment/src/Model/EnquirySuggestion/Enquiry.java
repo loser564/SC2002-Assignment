@@ -4,15 +4,19 @@ import Model.Camp.Camp;
 
 public class Enquiry {
 	private int enquiryID;
-    private String studentID;
     private Camp camp;
+
+
+    private String studentID;
+    private String campName;
     private String message;
     private boolean status;
     private String reply;
     private String title;
 
-    public Enquiry(String studentID, String title, String message, boolean status) {
+    public Enquiry(String studentID, String campName, String title, String message, boolean status) {
         this.studentID = studentID;
+        this.campName = campName;
         this.title = title;
         this.message = message;
         this.status = status;
@@ -67,15 +71,21 @@ public class Enquiry {
         this.reply = reply;
     }
 
-    public Camp getCamp() {
-        return camp;
+    public String getCampName() {
+        return campName;
+    }
+
+    public void setCampName(String camp) {
+    	this.campName=campName;
     }
 
     public void setCamp(Camp camp) {
-    	this.camp=camp;
+        this.camp = camp;
     }
 
-    
+    public Camp getCamp() {
+        return camp;
+    }
 
     
 

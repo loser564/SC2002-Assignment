@@ -1,12 +1,12 @@
 package View;
 import Model.Camp.*;
-import Model.CampComm.*;
+
 import Model.EnquirySuggestion.*;
 import Model.Student.*;
-import Model.User.*;
+
 
 import java.io.IOException;
-import java.lang.reflect.Array;
+
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -166,21 +166,15 @@ public class StudentFunctions {
             System.out.println("Camp does not exist!");
             return;
         }
-        else if(camp.getCampCommittee().contains(student)){
-            System.out.println("You are already a camp committee!");
-            return;
-        }
-        else if(student.getRemainderCampCommSlots() == 0){
-            System.out.println("Camp committee slots are full!");
-            return;
-        }
-        else{
-            student.applyCampCommittee(camp);
-            System.out.println("Camp committee applied successfully!");
-            return;
-        }
+        
+        student.applyCampCommittee(camp);
+        System.out.println("Camp committee applied successfully!");
+        return;
+    
         // sc.close();
     }
+
+    
 
     public void viewRegisteredCamps(Student student) throws IOException{
         ArrayList<Camp> campsRegistered;
@@ -221,16 +215,25 @@ public class StudentFunctions {
     }
 
     public void submitEnquiry(Student student) throws IOException{
+        ArrayList<Camp> camps;
+        camps = student.viewCamps();
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter enquiry title: ");
-        String enquiryTitle = sc.nextLine();
-        System.out.println("Enter enquiry description: ");
-        String enquiryDescription = sc.nextLine();
-        // int studentID,String message, boolean status
-        // String studentID = student.getStudentID();
-        student.submitEnquiry(enquiryTitle,enquiryDescription);
-        System.out.println("Enquiry submitted successfully!");
-        sc.close();
+        System.out.println("Enter camp to submit enquiry to: ");
+        String enquiryCamp = sc.nextLine();
+        for(Camp c: camps){
+            if(enquiryCamp.equals(c.getCampName())){
+                System.out.println("Enter enquiry title: ");
+                String enquiryTitle = sc.nextLine();
+                System.out.println("Enter enquiry description: ");
+                String enquiryDescription = sc.nextLine();
+                // int studentID,String message, boolean status
+                // String studentID = student.getStudentID();
+                student.submitEnquiry(enquiryCamp,enquiryTitle,enquiryDescription);
+                System.out.println("Enquiry submitted successfully!");
+                 
+            }
+        }
+        
     }
 
 
@@ -265,7 +268,7 @@ public class StudentFunctions {
             student.editEnquiry(enquiry);
             System.out.println("Enquiry edited successfully!");
         }
-        sc.close();
+        // sc.close();
     }
 
     public void deleteEnquiry(Student student) throws IOException{
@@ -292,7 +295,7 @@ public class StudentFunctions {
             student.deleteEnquiry(enquiry);
             System.out.println("Enquiry deleted successfully!");
         }
-        sc.close();
+        // sc.close();
 
     }
 
