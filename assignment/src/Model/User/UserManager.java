@@ -5,13 +5,28 @@ import java.util.ArrayList;
 import Model.Staff.Staff;
 import Model.Student.Student;
 
+/**
+* The UserManager class manages user information, including reading and writing to files.
+* @author Ryan
+* @version 1.0
+* @since 2023-11-3
+*/
 public class UserManager {
     // assignment\src\Database\Student.txt
-    private static final File studentFile = new File("assignment/src/Database/Student.txt");
-    private static final File staffFile = new File("assignment/src/Database/Staff.txt");
+    // Database\Student.txt
+    private static final File studentFile = new File("Database\\Student.txt");
+    private static final File staffFile = new File("Database\\Staff.txt");
 
+    /**
+    * Default constructor for UserManager.
+    */
     public UserManager(){}
 
+    /**
+     * Reads student information from the file.
+     *
+     * @return ArrayList of Student objects.
+     */
     public static ArrayList<Student> readStudents() {
         ArrayList<Student> students = new ArrayList<Student>();
         try (BufferedReader reader = new BufferedReader(new FileReader(studentFile))) {
@@ -51,49 +66,65 @@ public class UserManager {
     }
     
 
-    public static void writeStudentsPassword(String userID, String newPassword) throws IOException{
+    
+ /**
+    * Writes a new password for a student to the file.
+    *
+    * @param userID      The user ID of the student.
+    * @param newPassword The new password to set.
+    * @throws IOException If an I/O error occurs.
+    */
+    public static void writeStudentsPassword(String newPassword, String userID) throws IOException {
+        //File studentFile = readFile("Student.txt");
         ArrayList<Student> students = readStudents();
         Student student = new Student();
-        for(Student s: students){
-            if(s.getUserID().equals(userID)){
+        for (Student s : students) {
+            if (s.getStudentID().equals(userID)) {
                 student = s;
                 break;
             }
         }
-
-        String newLine = student.getStudentID() + "," + newPassword + "," + student.getFaculty() + "," + student.getUserRole();
-
+        // System.out.println("Debug: newPassword = " + newPassword);
+        String newLine = student.getName() + " " + student.getStudentID() + " " + student.getFaculty() + " " + newPassword;
+    
         File tempFile = new File(studentFile.getAbsolutePath() + ".tmp");
         BufferedReader reader = new BufferedReader(new FileReader(studentFile));
         BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
 
+        // Read each line and modify the line corresponding to the student ID
         String line;
-        while   ((line = reader.readLine()) != null){
-            if(line.equals(student.toString())){
+        while ((line = reader.readLine()) != null) {
+            if (line.startsWith(String.valueOf(student.getName()))) {
                 writer.write(newLine);
-                writer.newLine();
             } else {
                 writer.write(line);
-                writer.newLine();
             }
+            writer.newLine();
         }
 
         reader.close();
         writer.close();
 
-        if(!studentFile.delete()){
-            System.out.println("Could not delete file");
+        // Replace project file with temporary file
+        if (!studentFile.delete()) {
+            System.out.println("Failed to delete original file");
             return;
         }
 
-        if(!tempFile.renameTo(studentFile)){
-            System.out.println("Could not rename file");
+        if (!tempFile.renameTo(studentFile)) {
+            System.out.println("Failed to rename temporary file");
             return;
         }
 
-        
     }
 
+    
+    
+    /**
+    * Reads staff information from the file.
+    *
+    * @return ArrayList of Staff objects.
+    */
     public static ArrayList<Staff> readStaff(){
         ArrayList<Staff> staffs = new ArrayList<Staff>();
         try(BufferedReader reader = new BufferedReader(new FileReader(staffFile))){
@@ -125,47 +156,64 @@ public class UserManager {
         return staffs;
     }
 
-    public static void writeStaffPassword(String userID, String newPassword) throws IOException{
+   /**
+    * Writes a new password for a staff member to the file.
+    *
+    * @param userID      The user ID of the staff member.
+    * @param newPassword The new password to set.
+    * @throws IOException If an I/O error occurs.
+    */
+    public static void writeStaffPassword(String newPassword, String userID) throws IOException{
+        //File staffFile = readFile("Staff.txt");
         ArrayList<Staff> staffs = readStaff();
         Staff staff = new Staff();
         for(Staff s: staffs){
-            if(s.getUserID().equals(userID)){
+            System.out.println("Debug: s.getUserID() = " + s.getStaffID());
+            if(s.getStaffID().equals(userID)){
                 staff = s;
                 break;
             }
         }
 
-        String newLine = staff.getStaffID() + "," + newPassword + "," + staff.getFaculty() + "," + staff.getUserRole();
-
+        System.out.println("Debug: newPassword = " + newPassword);
+        String newLine = staff.getName() + " " + staff.getStaffID() + " " + staff.getFaculty() + " " + newPassword;
         File tempFile = new File(staffFile.getAbsolutePath() + ".tmp");
         BufferedReader reader = new BufferedReader(new FileReader(staffFile));
         BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
 
         String line;
-        while   ((line = reader.readLine()) != null){
-            if(line.equals(staff.toString())){
+        while ((line = reader.readLine()) != null) {
+            if (line.startsWith(String.valueOf(staff.getName()))) {
                 writer.write(newLine);
-                writer.newLine();
             } else {
                 writer.write(line);
-                writer.newLine();
             }
+            writer.newLine();
         }
 
         reader.close();
         writer.close();
 
-        if(!staffFile.delete()){
-            System.out.println("Could not delete file");
+        // Replace project file with temporary file
+        if (!staffFile.delete()) {
+            System.out.println("Failed to delete original file");
             return;
         }
 
-        if(!tempFile.renameTo(staffFile)){
-            System.out.println("Could not rename file");
+        if (!tempFile.renameTo(staffFile)) {
+            System.out.println("Failed to rename temporary file");
             return;
         }
+
+        
     }
 
+    /**
+    * Reads camp committee information from the file.
+    *
+    * @return ArrayList of Student objects representing camp committee members.
+    * @throws IOException If an I/O error occurs.
+    */
     public static ArrayList<Student> readCampComm(){
         ArrayList<Student> campComm = new ArrayList<Student>();
         try(BufferedReader reader = new BufferedReader(new FileReader(staffFile))){

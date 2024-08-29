@@ -10,9 +10,18 @@ import java.util.stream.Collectors;
 
 import Model.Camp.Camp;
 
+/**
+* Represents a report generator for student-related information.
+* @author SCEX Group 3
+*/
 public class StudentReport {
     private List<Student> students;
 
+    /**
+    * Constructs a StudentReport object with the given list of students.
+    *
+    * @param students The list of students to be included in the report.
+    */
     public StudentReport(List<Student> students) {
         this.students = students;
     }
@@ -25,7 +34,14 @@ public class StudentReport {
     //             .collect(Collectors.toList());
     // }
     
-
+    /**
+    * Generates a report based on the provided filtered students, camp committee status, and faculty.
+    *
+    * @param filteredStudents The list of students to be included in the report.
+    * @param isCampComm       A boolean indicating whether to include only camp committee members.
+    * @param faculty          The faculty to filter the students by (null or "null" for no filtering by faculty).
+    * @throws IOException If an I/O error occurs during report generation.
+    */
     public static void generateReport(ArrayList<Student> filteredStudents, boolean isCampComm, String faculty) throws IOException{
         try(BufferedWriter writer = new BufferedWriter(new FileWriter("assignment/src/Database/student_report.txt"))){
             for (Student student : filteredStudents) {

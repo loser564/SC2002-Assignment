@@ -10,11 +10,30 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
 
-
+/**
+* The StudentFunctions class provides functionality for students in the CAMs.
+* It includes methods for changing passwords, viewing camps, registering and quitting camps, applying for camp committees,
+* viewing registered camps, handling enquiries, and managing suggestions.
+*
+* @author Alicia
+* @version 1.0
+* @since 2023-11-19
+*/
 public class StudentFunctions {
+    /**
+    * Constructs a StudentFunctions instance.
+    */
     public StudentFunctions(){}
 
-    public boolean changePassword(Student student, String password) throws IOException{
+    /**
+    * Changes the password of the given student if the old password is correct and the new password is valid.
+    *
+    * @param student The student for whom the password is being changed.
+    * @param password The current password of the student.
+    * @return True if the password change is successful, false otherwise.
+    * @throws IOException If an I/O error occurs.
+    */
+    public boolean changePassword(Student student, String userID, String password) throws IOException{
         Scanner sc = new Scanner(System.in);
         System.out.println("Change Password:");
         System.out.println("Enter old password: ");
@@ -41,7 +60,7 @@ public class StudentFunctions {
                 System.out.println("Password cannot be empty!");
             }
             else{
-                boolean pwChange = student.changePassword(newPassword);
+                boolean pwChange = student.changePassword(userID,newPassword);
                 System.out.println("Password changed successfully!");
                 return pwChange;
             }
@@ -51,6 +70,12 @@ public class StudentFunctions {
     }
     
 
+    /**
+    * Displays the list of camps available to the student.
+    *
+    * @param student The student for whom the camps are being viewed.
+    * @throws IOException If an I/O error occurs.
+    */
     public void viewCamps(Student student) throws IOException{
         System.out.println("Debug: viewCamps");
         ArrayList<Camp> camps;
@@ -79,6 +104,12 @@ public class StudentFunctions {
         }
     }
 
+    /**
+    * Deletes the specified enquiry if it exists and has not been replied to.
+    *
+    * @param student The student submitting the enquiry.
+    * @throws IOException If an I/O error occurs.
+    */
     public void registerForCamp(Student student) throws IOException{
         System.out.println("Debug: studentID: " + student.getUserID());
         ArrayList<Camp> camps;

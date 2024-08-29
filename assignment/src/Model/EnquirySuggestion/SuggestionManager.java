@@ -3,12 +3,25 @@ package Model.EnquirySuggestion;
 import java.io.*;
 import java.util.ArrayList;
 
-
+/**
+ * The {@code SuggestionManager} class provides methods for managing suggestions made by students.
+ * It allows reading, writing, editing, and deleting suggestions from a data file.
+ * 
+ * @author Shao Jie
+ * @version 1.0
+ * @since 2023-11-19
+ */
 public class SuggestionManager {
-    private static final File suggestionFile = new File("assignment/src/Database/Suggestion.txt");
-
+    private static final File suggestionFile = new File("src/Database/Suggestion.txt");
+    /**
+     * Constructs a new {@code SuggestionManager} object.
+     */
     public SuggestionManager(){}
-
+    /**
+     * Reads suggestions from the data file and returns a list of {@code Suggestion} objects.
+     *
+     * @return An {@code ArrayList} of {@code Suggestion} objects read from the data file.
+     */
     public static ArrayList<Suggestion> readSuggestions() {
         //System.out.println("Debug: readSuggestions entered");
         ArrayList<Suggestion> suggestions = new ArrayList<>();
@@ -44,7 +57,12 @@ public class SuggestionManager {
         }
         return suggestions;
     }
-    
+     /**
+     * Writes a new suggestion to the data file.
+     *
+     * @param suggestion The {@code Suggestion} object to be written to the data file.
+     * @throws IOException If an I/O error occurs while writing the suggestion.
+     */
 
     public static void writeSuggestion(Suggestion suggestion) throws IOException {
         ArrayList<Suggestion> suggestions = readSuggestions();
@@ -66,7 +84,12 @@ public class SuggestionManager {
        
 
     }
-
+     /**
+     * Edits an existing suggestion in the data file.
+     *
+     * @param suggestion The {@code Suggestion} object representing the suggestion to be edited.
+     * @throws IOException If an I/O error occurs while editing the suggestion.
+     */
     public static void editSuggestion(Suggestion suggestion) throws IOException{
         int suggestionID = suggestion.getSuggestionID();
         String newLine = suggestionID + "," + suggestion.getStudentID()+ "," + suggestion.getSuggestionText() + "," + suggestion.getStatus();
@@ -100,7 +123,12 @@ public class SuggestionManager {
 
 
     }
-
+    /**
+     * Deletes an existing suggestion from the data file.
+     *
+     * @param suggestion The {@code Suggestion} object representing the suggestion to be deleted.
+     * @throws IOException If an I/O error occurs while deleting the suggestion.
+     */
     public static void deleteSuggestion(Suggestion suggestion) throws IOException{
         int suggestionID = suggestion.getSuggestionID();
         File tempFile = new File(suggestionFile.getAbsolutePath() + ".tmp");
@@ -126,14 +154,22 @@ public class SuggestionManager {
             System.out.println("Could not rename file");
         }
     }
-
+    /**
+     * Prints all suggestions stored in the data file.
+     *
+     * @param suggestion The {@code Suggestion} object used for printing.
+     */
     public static void printAllSuggestions(Suggestion suggestion){
         ArrayList<Suggestion> suggestions = readSuggestions();
         for(Suggestion s: suggestions){
             System.out.println(s.toString());
         }
     }
-
+    /**
+     * Prints suggestions made by a specific student.
+     *
+     * @param suggestion The {@code Suggestion} object representing the student.
+     */
     public static void printMySuggestions(Suggestion suggestion){
         ArrayList<Suggestion> suggestions = readSuggestions();
         for(Suggestion s: suggestions){

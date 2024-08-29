@@ -4,13 +4,33 @@ import java.util.Scanner;
 
 import Model.Camp.Camp;
 import Model.Staff.Staff;
+import Model.User.UserRole;
+/**
+ * The StaffView class represents the view layer for Staff members in the CAMs.
+ * It provides methods to display the Staff menu, handle user input, and interact with the underlying system through the
+ * StaffFunctions class. Staff members can perform various actions, such as changing passwords, managing camps, handling
+ * enquiries, processing suggestions, and generating reports.
+ *
+ * @author Alicia
+ * @version 1.0
+ * @since 2023-11-19
+ */
 public class StaffView implements MainView{
 
+    /**
+    * Constructs a StaffView instance with the specified user ID and password.
+    *
+    * @param userID The user ID of the Staff member.
+    * @param password The password of the Staff member.
+    */
     public StaffView(String UserID, String password){
        super();
        
     }
 
+    /**
+    * Displays the menu options available to Staff members.
+    */
     @Override
     public void printMenu(){
         System.out.println("1. Change Password");
@@ -29,6 +49,12 @@ public class StaffView implements MainView{
         System.out.println("14. Logout");
     }
 
+    /**
+    * Implements the main functionality of the StaffView, allowing Staff members to interact with the CAMs system.
+    *
+    * @param userID The user ID of the Staff member.
+    * @param password The password of the Staff member.
+    */
     @Override
     public void viewApp(String userID, String password){
         int choice = 0;
@@ -36,6 +62,7 @@ public class StaffView implements MainView{
         Staff staff = new Staff();
         staff.setUserID(userID);
         staff.setPassword(password);
+        staff.setRole(UserRole.STAFF);
         
         // String password = staff.getPassword();
         boolean pwChange = false;
@@ -71,7 +98,7 @@ public class StaffView implements MainView{
                                     System.out.println("Password cannot be empty!");
                                 }
                                 else{
-                                    pwChange = staff.changePassword(newPassword);
+                                    pwChange = staff.changePassword(userID,newPassword);
                                     System.out.println("Password changed successfully!");
                                     pwChange = true;
                                 }

@@ -1,13 +1,30 @@
 package Model.EnquirySuggestion;
-import java.util.ArrayList;
+
 import java.io.*;
+import java.util.ArrayList;
 
-
+/**
+ * The {@code EnquiryManager} class provides methods for reading, writing, editing, deleting,
+ * and printing enquiries related to camps. It manages the storage and retrieval of enquiry
+ * data from a file.
+ * 
+ * @author Shao Jie
+ * @version 3.0
+ * @since 2023-11-19
+ */
 public class EnquiryManager {
-    private static final File enquiryFile = new File("assignment/src/Database/Enquiry.txt");
+    private static final File enquiryFile = new File("src/Database/Enquiry.txt");
 
-    public EnquiryManager(){}
+    /**
+     * Constructs a new instance of {@code EnquiryManager}.
+     */
+    public EnquiryManager() {}
 
+    /**
+     * Reads and retrieves a list of enquiries from the enquiry file.
+     *
+     * @return An {@code ArrayList} of {@code Enquiry} objects representing the stored enquiries.
+     */
     public static ArrayList<Enquiry> readEnquiries() {
         ArrayList<Enquiry> enquiries = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(enquiryFile))) {
@@ -42,6 +59,12 @@ public class EnquiryManager {
         return enquiries;
     }
     
+    /**
+     * Writes a new enquiry to the enquiry file.
+     *
+     * @param enquiry The {@code Enquiry} object to be written.
+     * @throws IOException If an error occurs while writing to the file.
+     */
     public static void writeEnquiries(Enquiry enquiry) throws IOException {
         ArrayList<Enquiry> enquiries = readEnquiries();
         int maxEnquiryID = 0;
@@ -61,9 +84,14 @@ public class EnquiryManager {
             e.printStackTrace();
         }
     }
-    
 
-    public static void editEnquiry(Enquiry enquiry) throws IOException{
+    /**
+     * Edits an existing enquiry in the enquiry file.
+     *
+     * @param enquiry The {@code Enquiry} object representing the edited enquiry.
+     * @throws IOException If an error occurs while editing the file.
+     */
+    public static void editEnquiry(Enquiry enquiry) throws IOException {
         int enquiryID = enquiry.getEnquiryID();
         String newLine = enquiryID + "," + enquiry.getStudentID() + "," +enquiry.getCampName() + ","  
         + enquiry.getTitle() + "," + enquiry.getMessage() 
@@ -101,7 +129,13 @@ public class EnquiryManager {
 
     }
 
-    public static void deleteEnquiry(Enquiry enquiry) throws IOException{
+    /**
+     * Deletes an existing enquiry from the enquiry file.
+     *
+     * @param enquiry The {@code Enquiry} object representing the enquiry to be deleted.
+     * @throws IOException If an error occurs while deleting the enquiry.
+     */
+    public static void deleteEnquiry(Enquiry enquiry) throws IOException {
         int enquiryID = enquiry.getEnquiryID();
         File tempFile = new File(enquiryFile.getAbsolutePath() + ".tmp");
 
@@ -133,11 +167,15 @@ public class EnquiryManager {
         
     }
 
-    public static void printAllEnquiries(Enquiry enquiry){
+    /**
+     * Prints details of all enquiries to the console.
+     *
+     * @param enquiry An {@code Enquiry} object (used for class reference).
+     */
+    public static void printAllEnquiries(Enquiry enquiry) {
         ArrayList<Enquiry> enquiries = readEnquiries();
         for(Enquiry e: enquiries){
             System.out.println(e.toString());
         }
     }
 }
-

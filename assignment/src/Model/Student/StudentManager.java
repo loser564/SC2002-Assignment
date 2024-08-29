@@ -18,12 +18,25 @@ import java.util.Set;
 
 import Model.Camp.Camp;
 
+/**
+* Manages student-related operations, including reading/writing student files and handling registrations.
+* @author SCEX Group 3
+*/
+
 public class StudentManager {
     // dictionary of student and blackListStatus
     static Map<String, Boolean> blackList = new HashMap<>();
     // assignment\src\Database\RegisteredStudents.txt
-    private static final File studentFile = new File("assignment/src/Database/RegisteredStudents.txt");
+    private static final File studentFile = new File("Database\\RegisteredStudents.txt");
     
+    /**
+    * Reads the student file to check if a student with the specified ID is registered for a given camp.
+    *
+    * @param campName  The name of the camp.
+    * @param studentID The ID of the student.
+    * @return True if the student is registered for the camp, false otherwise.
+    * @throws IOException If an I/O error occurs during file reading.
+    */
     public static boolean readStudentFile( String CampName, String studentID ) throws IOException {
         try(BufferedReader reader = new BufferedReader(new FileReader(studentFile))){
             String line = reader.readLine();
@@ -53,6 +66,15 @@ public class StudentManager {
         
     }
     
+     /**
+    * Writes a new student registration entry for a given camp and student ID to the student file.
+    *
+    * @param camps      The list of camps.
+    * @param campName   The name of the camp.
+    * @param studentID  The ID of the student to be registered.
+    * @return True if the registration is successful, false otherwise.
+    * @throws IOException If an I/O error occurs during file writing.
+    */
     public static boolean writeStudentFile(ArrayList<Camp> camps, String campName, String studentID) throws IOException {
         System.out.println("Student ID: " + studentID);
     Map<String, Set<String>> campStudents = new HashMap<>();
@@ -95,6 +117,14 @@ public class StudentManager {
     return true;
     }
 
+    /**
+    * Removes a student registration for a given camp and student ID from the student file.
+    *
+    * @param camps     The list of camps.
+    * @param campName  The name of the camp.
+    * @param studentID The ID of the student to be removed.
+    * @throws IOException If an I/O error occurs during file writing.
+    */
     public static void removeStudent (ArrayList<Camp> camps, String campName, String studentID) throws IOException {
         Map<String, Set<String>> campStudents = new HashMap<>();
 

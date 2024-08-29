@@ -7,9 +7,30 @@ import Model.CampComm.CampCommiteeManager;
 import java.util.Scanner;
 
 
+/**
+ * The CampCommView class represents the menu view for a Camp Committee member in the CAMs.
+ * It implements the MainView interface and provides functionality for interacting with camp details, suggestions, and enquiries.
+ * Users can view camp details, make suggestions, view and manage their own suggestions, reply to enquiries, generate reports, and log out.
+ *
+ * @author Alicia
+ * @version 1.0
+ * @since 2023-11-19
+ */
+
 public class CampCommView implements MainView {
+    
+    /**
+     * Constructs a CampCommView object for a specific user with the provided user ID and password.
+     *
+     * @param userID The user ID associated with the Camp Committee member.
+     * @param password The password associated with the user ID.
+     */
 
     public CampCommView(String userID, String password){}
+
+    /**
+     * Prints the menu options available to the Camp Committee member.
+     */
 
     @Override
     public void printMenu(){
@@ -23,6 +44,14 @@ public class CampCommView implements MainView {
         System.out.println("8. Logout");
     }
 
+    /**
+     * Displays the Camp Committee member menu, allowing interaction with various functionalities such as viewing details,
+     * making suggestions, managing suggestions, replying to enquiries, generating reports, and logging out.
+     *
+     * @param userID The user ID associated with the Camp Committee member.
+     * @param password The password associated with the user ID.
+     */
+
     @Override
     public void viewApp(String userID, String password){
         int choice = 0;
@@ -32,7 +61,7 @@ public class CampCommView implements MainView {
         campComm.setPassword(password);
         String campName = CampCommiteeManager.findCampForCommitteeMember(userID);
         Camp camp = campComm.getCamp(campName);
-
+        
 
         System.out.println("Welcome " + userID + " to Camp Committee Menu!");
         boolean loggedIn = true;

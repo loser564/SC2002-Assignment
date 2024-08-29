@@ -25,12 +25,35 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-
+/**
+ * The {@code Staff} class represents a staff member in the system. It extends the {@link User}
+ * class and provides functionality related to camps, enquiries, suggestions, and generating reports.
+ * Staff members have the ability to create, edit, and manage camps, respond to enquiries, approve
+ * suggestions, and generate reports.
+ * 
+ * @author Jia Wei
+ * @version 4.0
+ * @since 2023-11-19
+ */
 public class Staff extends User implements SuggestionInterface, EnquiryInterfaceStaff {
     private String staffID;
     private String name;
 
+    /**
+     * Constructs a new {@code Staff} instance with default values.
+     */
+
     public Staff(){}
+
+     /**
+     * Constructs a new {@code Staff} instance with the specified information.
+     *
+     * @param name     The name of the staff member.
+     * @param userID   The user ID of the staff member.
+     * @param password The password of the staff member.
+     * @param faculty  The faculty to which the staff member belongs.
+     * @param role     The role of the staff member.
+     */
 
     public Staff(String name, String userID, String password, String faculty, UserRole role){
         this.name = name;
@@ -41,16 +64,44 @@ public class Staff extends User implements SuggestionInterface, EnquiryInterface
     }
 
     // getters and setters
+    /**
+     * Gets the staff ID of the staff member.
+     * 
+     * @return The staff ID of the staff member.
+     */
     public String getStaffID() { return staffID; }
-    
+    /**
+     * Sets the staff ID of the staff member.
+     * 
+     * @param staffID The staff ID to set.
+     * 
+     */
     public void setStaffID(String staffID) { this.staffID = staffID; }
 
+    /**
+     * Gets the staff member's name.
+     *
+     * @return The name of the staff member.
+     */
     public String getName() { return name; }
-
+     /**
+     * Sets the staff member's name.
+     *
+     * @param name The new name for the staff member.
+     */
     public void setName(String name) { this.name = name; }
-
+    /**
+     * Gets the user role of the staff member.
+     *
+     * @return The user role of the staff member.
+     */
     public UserRole getUserRole() { return super.getUserRole(); }
-
+    /**
+     * Retrieves a camp by its name.
+     *
+     * @param campName The name of the camp to retrieve.
+     * @return The {@link Camp} object associated with the camp name, or {@code null} if not found.
+     */
     public Camp getCamp(String campName){
         ArrayList<Camp> camps = CampManager.readCamps();
         for(Camp c: camps){
@@ -61,7 +112,20 @@ public class Staff extends User implements SuggestionInterface, EnquiryInterface
         return null;
     }
 
-
+    /**
+     * Creates a new camp with the provided details.
+     *
+     * @param campName           The name of the camp.
+     * @param startDate          The start date of the camp.
+     * @param endDate            The end date of the camp.
+     * @param registrationDeadline The registration deadline for the camp.
+     * @param userGroup          The user group associated with the camp.
+     * @param location           The location of the camp.
+     * @param maxCapacity        The maximum capacity of the camp.
+     * @param campCommitteeSlots The number of camp committee slots available.
+     * @param description        The description of the camp.
+     * @throws IOException If an I/O error occurs while creating the camp.
+     */
     public void createCamp(String campName, Date startDate, Date endDate, Date registrationDeadline,
     String userGroup, String location, int maxCapacity, int campCommitteeSlots,
     String description) throws IOException{
@@ -82,6 +146,12 @@ public class Staff extends User implements SuggestionInterface, EnquiryInterface
         System.out.println("Camp created successfully!");
         
     }
+    /**
+     * Edits an existing camp with the new start date
+     * @param camp
+     * @param newStartDate
+     * @throws IOException
+     */
 
     public void editStartDate(Camp camp, Date newStartDate) throws IOException{
         ArrayList<Camp> camps = CampManager.readCamps();
@@ -102,6 +172,12 @@ public class Staff extends User implements SuggestionInterface, EnquiryInterface
         }
     }
 
+    /**
+     * Edits an existing camp with the new end date
+     * @param camp
+     * @param newEndDate
+     * @throws IOException
+     */
     public void editEndDate(Camp camp, Date newEndDate) throws IOException{
         ArrayList<Camp> camps = CampManager.readCamps();
         for (Camp c: camps){
@@ -124,7 +200,12 @@ public class Staff extends User implements SuggestionInterface, EnquiryInterface
        
     }
 
-
+    /**
+     * Edits an existing camp with the new registration deadline
+     * @param camp
+     * @param newRegistrationDeadline
+     * @throws IOException
+     */
     public void editRegistrationDeadline(Camp camp, Date newRegistrationDeadline) throws IOException{
         ArrayList<Camp> camps = CampManager.readCamps();
         for (Camp c: camps){
@@ -147,6 +228,13 @@ public class Staff extends User implements SuggestionInterface, EnquiryInterface
         
     }
 
+    /**
+     * Edits an existing camp with the new user group
+     * @param camp
+     * @param newUserGroup
+     * @throws IOException
+     */
+
     public void editUserGroup(Camp camp, String newUserGroup) throws IOException{
         ArrayList<Camp> camps = CampManager.readCamps();
         for (Camp c: camps){
@@ -164,6 +252,13 @@ public class Staff extends User implements SuggestionInterface, EnquiryInterface
 
         
     }
+
+    /**
+     * Edits an existing camp with the new location
+     * @param camp
+     * @param newLocation
+     * @throws IOException
+     */
 
     public void editLocation(Camp camp, String newLocation) throws IOException{
         ArrayList<Camp> camps = CampManager.readCamps();
@@ -183,6 +278,13 @@ public class Staff extends User implements SuggestionInterface, EnquiryInterface
         
     }
 
+    /**
+     * Edits an existing camp with the new max capacity
+     * @param camp
+     * @param newMaxCapacity
+     * @throws IOException
+     */
+
     public void editMaxCapacity(Camp camp, int newMaxCapacity) throws IOException{
         ArrayList<Camp> camps = CampManager.readCamps();
         for (Camp c: camps){
@@ -201,6 +303,12 @@ public class Staff extends User implements SuggestionInterface, EnquiryInterface
        
     }
 
+    /**
+     * Edits an existing camp with the new camp committee slots
+     * @param camp
+     * @param newCampCommitteeSlots
+     * @throws IOException
+     */
     public void editCampCommitteeSlots(Camp camp, int newCampCommitteeSlots) throws IOException{
         ArrayList<Camp> camps = CampManager.readCamps();
         for (Camp c: camps){
@@ -225,6 +333,11 @@ public class Staff extends User implements SuggestionInterface, EnquiryInterface
         
     }
 
+    /**
+     * Edits an existing camp with the new description
+     * @param camp
+     * @param newDescription
+     */
     public void editCampDescription(Camp camp, String newDescription){
         ArrayList<Camp> camps = CampManager.readCamps();
         for (Camp c: camps){
@@ -242,11 +355,20 @@ public class Staff extends User implements SuggestionInterface, EnquiryInterface
         
     }
 
-    // view all camps
+    /**
+     * Retrieves a list of all camps in the system.
+     *
+     * @return An {@link ArrayList} of {@link Camp} objects representing all camps in the system.
+     */
     public ArrayList<Camp> viewAllCamps(){
         ArrayList<Camp> camps = CampManager.readCamps();
         return camps;
     }
+    /**
+     * Retrieves a list of camps created by the staff member.
+     *
+     * @return An {@link ArrayList} of {@link Camp} objects representing camps created by the staff member.
+     */
 
     // view camps made by Staff 
     public ArrayList<Camp> viewOwnCamps(){
@@ -264,6 +386,12 @@ public class Staff extends User implements SuggestionInterface, EnquiryInterface
         return camps;
     }
 
+    /**
+     * Prints details of a camp to the console.
+     *
+     * @param camp The {@link Camp} object for which details should be printed.
+     */
+
     public void printCampDetails(Camp camp){
         System.out.println("Camp Name: " + camp.getCampName());
         System.out.println("Camp Start Date: " + camp.getStartDate());
@@ -276,17 +404,31 @@ public class Staff extends User implements SuggestionInterface, EnquiryInterface
         System.out.println("Camp Staff ID: " + camp.getStaffID());
     }
 
-
+     /**
+     * Deletes a camp if it was created by the staff member.
+     *
+     * @param camp The {@link Camp} object to be deleted.
+     * @throws IOException If an I/O error occurs while deleting the camp.
+     */
     public void deleteCamp(Camp camp) throws IOException{
         ArrayList<Camp> camps = CampManager.readCamps();
-        if(camp.getStaffID().equals(getStaffID())){
-            camps.remove(camp);
-            CampManager.writeNewCamps(camp);
+        // System.out.println("Staff ID: " + this.getUserID());
+        // System.out.println("Camp Staff ID: " + camp.getStaffID());
+        if(camp.getStaffID().equals(this.getUserID())){
+            // System.out.println("Debug: camp Name: " + camp.getCampName());
+            CampManager.deleteCamp(camp);
             System.out.println("Camp deleted successfully!");
         } else {
             System.out.println("Camp not deleted!");
         }
     }
+
+    /**
+     * Changes the visibility status of a camp.
+     *
+     * @param camp The {@link Camp} object for which visibility should be changed.
+     * @throws IOException If an I/O error occurs while changing camp visibility.
+     */
 
     public void changeCampVisibility(Camp camp) throws IOException{
         // ArrayList<Camp> camps = CampManager.readCamps();
@@ -309,6 +451,11 @@ public class Staff extends User implements SuggestionInterface, EnquiryInterface
 
     /////////////////// ENQUIRIES //////////////////////
     // view enquiries
+    /**
+     * Retrieves a list of enquiries related to camps created by the staff member.
+     *
+     * @return An {@link ArrayList} of {@link Enquiry} objects representing enquiries related to the staff member's camps.
+     */
     public ArrayList<Enquiry> viewMyCampsEnquiries(){
         ArrayList<Enquiry> enquiries = EnquiryManager.readEnquiries();
         ArrayList<Enquiry> myEnquiries = new ArrayList<>();
@@ -322,6 +469,13 @@ public class Staff extends User implements SuggestionInterface, EnquiryInterface
     }
 
     // reply enquiries
+    /**
+     * Replies to an enquiry with a given ID.
+     *
+     * @param enquiryID The ID of the enquiry to be replied to.
+     * @param reply The reply message to be sent.
+     * @throws IOException If an I/O error occurs while replying to the enquiry.
+     */
     public void replyEnquiry(int enquiryID, String reply) throws IOException{
         ArrayList<Enquiry> enquiries = EnquiryManager.readEnquiries();
         for(Enquiry e: enquiries){
@@ -342,7 +496,11 @@ public class Staff extends User implements SuggestionInterface, EnquiryInterface
 
     }
 
-
+    /**
+     * Prints details of an enquiry to the console.
+     *
+     * @param enquiry The {@link Enquiry} object for which details should be printed.
+     */
     public void printEnquiryDetails(Enquiry enquiry){
         System.out.println("Enquiry ID: " + enquiry.getEnquiryID());
         System.out.println("Enquiry Student ID: " + enquiry.getStudentID());
@@ -356,7 +514,11 @@ public class Staff extends User implements SuggestionInterface, EnquiryInterface
 
 
     /////////////////////// Suggestions ///////////////////////
-
+    /**
+     * Retrieves a list of suggestions related to camps created by the staff member.
+     *
+     * @return An {@link ArrayList} of {@link Suggestion} objects representing suggestions related to the staff member's camps.
+     */
     public ArrayList<Suggestion> viewMyCampsSuggestions(){
         ArrayList<Suggestion> suggestions = SuggestionManager.readSuggestions();
         ArrayList<Suggestion> mySuggestions = new ArrayList<>();
@@ -370,6 +532,12 @@ public class Staff extends User implements SuggestionInterface, EnquiryInterface
     }
 
     // approve suggestions
+    /**
+     * Approves a suggestion with a given ID.
+     *
+     * @param suggestionID The ID of the suggestion to be approved.
+     * @throws IOException If an I/O error occurs while approving the suggestion.
+     */
     public void approveSuggestion(int suggestionID) throws IOException{
         ArrayList<Suggestion> suggestions = SuggestionManager.readSuggestions();
         for(Suggestion s: suggestions){
@@ -390,7 +558,11 @@ public class Staff extends User implements SuggestionInterface, EnquiryInterface
 
     }
     
-
+    /**
+     * Prints details of a suggestion to the console.
+     *
+     * @param suggestion The {@link Suggestion} object for which details should be printed.
+     */
 
     public void printSuggestionDetails(Suggestion suggestion){
         System.out.println("Suggestion ID: " + suggestion.getSuggestionID());
@@ -404,6 +576,15 @@ public class Staff extends User implements SuggestionInterface, EnquiryInterface
 
     ///////////////////////////////////////     REPORTS     ///////////////////////////////////////
     
+    /**
+     * Generates a report based on specified filters and camp information.
+     *
+     * @param facultyFilter   A filter to include only students from a specific faculty in the report.
+     * @param isCampCommFilter A boolean indicating whether to include camp committee members in the report.
+     * @param camp            The {@link Camp} object for which the report should be generated.
+     * @param campName        The name of the camp for which the report should be generated.
+     * @throws IOException If an I/O error occurs while generating the report.
+     */
     public void generateReport(String facultyFilter, boolean isCampCommFilter, Camp camp, String campName) throws IOException
     {
         ArrayList<Student> students = UserManager.readStudents();
@@ -420,6 +601,13 @@ public class Staff extends User implements SuggestionInterface, EnquiryInterface
 
 
     }
+    /**
+     * Generates a performance report for camp committee members of a specific camp.
+     *
+     * @param staff    The {@link Staff} member responsible for generating the report.
+     * @param campName The name of the camp for which the performance report should be generated.
+     * @throws IOException If an I/O error occurs while generating the performance report.
+     */
 
     public static void generatePerformanceReport(Staff staff, String campName) throws IOException {
         ArrayList<Student> students = UserManager.readStudents();
@@ -435,12 +623,5 @@ public class Staff extends User implements SuggestionInterface, EnquiryInterface
         System.out.println("Debug: report generation");
         PerformanceReport.generateReport(committeeMembers, campName);
     }
-    
-    
-    
-
-    
-
-   
-    
+  
 }

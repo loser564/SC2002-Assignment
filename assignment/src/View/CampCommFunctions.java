@@ -8,15 +8,41 @@ import Model.Camp.*;
 import Model.CampComm.*;
 import Model.EnquirySuggestion.*;
 
+/**
+ * The CampCommFunctions class consists of functions available to a Camp Committee Member
+ * It provides methods for viewing camp details, making suggestions, managing suggestions,
+ * replying to enquiries, and generating reports.
+ * This class serves as a part of the View layer in the CAMs application.
+ *
+ * @author Alicia
+ * @version 1.0
+ * @since 2023-11-19
 
+ */
 
 public class CampCommFunctions {
+    /**
+     * Default constructor for the CampCommFunctions class.
+     */
     public CampCommFunctions(){}
-
+    
+    /**
+     * Displays details of a specific camp using the provided CampCommitee and Camp instances.
+     *
+     * @param campComm The CampCommitee instance handling the camp details.
+     * @param camp The Camp instance for which details are to be displayed.
+     */
 
     public void viewDetails(CampCommitee campComm, Camp camp){
         campComm.printCampDetails(camp);
     }
+
+    /**
+     * Allows a Camp Committee member to make suggestions related to the camp.
+     *
+     * @param campComm The CampCommitee instance handling suggestions.
+     * @throws IOException If an I/O error occurs while reading user input.
+     */
 
     public void makeSuggestions(CampCommitee campComm) throws IOException{
         Scanner sc = new Scanner(System.in);
@@ -27,6 +53,12 @@ public class CampCommFunctions {
         campComm.addPoints(1);
         
     }
+    
+    /**
+     * Displays suggestions submitted by the Camp Committee member.
+     *
+     * @param campComm The CampCommitee instance handling suggestions.
+     */
 
     public void viewMySuggestions(CampCommitee campComm){
         ArrayList<Suggestion> mySuggestions = campComm.viewMySuggestions();
@@ -36,6 +68,12 @@ public class CampCommFunctions {
         }
     }
     
+    /**
+     * Allows a Camp Committee member to edit their own suggestions if they have not been approved.
+     *
+     * @param campComm The CampCommitee instance handling suggestions.
+     * @throws IOException If an I/O error occurs while reading user input.
+     */
 
     public void editMySuggestions(CampCommitee campComm) throws IOException{
         viewMySuggestions(campComm);
@@ -64,6 +102,13 @@ public class CampCommFunctions {
         // sc.close();
     }
 
+    /**
+     * Deletes a suggestion submitted by the Camp Committee member if it has not been approved.
+     *
+     * @param campComm The CampCommitee instance handling suggestions.
+     * @throws IOException If an I/O error occurs while reading user input.
+     */
+
     public void deleteMySuggestions(CampCommitee campComm) throws IOException{
         viewMySuggestions(campComm);
         Scanner sc = new Scanner(System.in);
@@ -87,6 +132,13 @@ public class CampCommFunctions {
         }
         // sc.close();
     }
+
+    /**
+     * Allows a Camp Committee member to reply to a camp-related enquiry.
+     *
+     * @param campComm The CampCommitee instance handling enquiries.
+     * @throws IOException If an I/O error occurs while reading user input.
+     */
 
     public void replyToEnquiry(CampCommitee campComm) throws IOException{
         Scanner sc = new Scanner(System.in);
@@ -113,6 +165,15 @@ public class CampCommFunctions {
         }
         // sc.close();
     }
+
+    /**
+     * Generates a report based on specified filters for a given camp.
+     *
+     * @param campComm The CampCommitee instance responsible for report generation.
+     * @param camp The Camp instance for which the report is to be generated.
+     * @param campName The name of the camp for which the report is generated.
+     * @throws IOException If an I/O error occurs while reading user input.
+     */
 
     public void generateReport(CampCommitee campComm, Camp camp, String campName) throws IOException{
         Scanner sc = new Scanner(System.in);

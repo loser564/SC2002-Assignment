@@ -7,11 +7,26 @@ import Model.Staff.Staff;
 import Model.Student.Student;
 
 
+/**
+* The UserLogin class handles user verification and login functionality.
+* @author Ryan
+* @version 1.0
+* @since 2023-11-3
+*/
 public class UserLogin {
     private String userType;
-
+    
+    /**
+    * Default constructor for UserLogin.
+    */
     public UserLogin(){}
 
+    /**
+    * Verifies if a user with the given userID exists among students or staff.
+    *
+    * @param userID The user ID to verify.
+    * @return True if the user is found, false otherwise.
+    */
     public boolean verifyUser(String userID){
         ArrayList<Student> students = UserManager.readStudents();
         // System.out.println("Students: " + students);
@@ -40,6 +55,13 @@ public class UserLogin {
 
     }
 
+    /**
+    * Verifies the login credentials (userID and password) and determines the user type.
+    *
+    * @param userID   The user ID for login.
+    * @param password The password for login.
+    * @return True if the login is successful, false otherwise.
+    */
     public boolean verifyLogin(String userID, String password){
         ArrayList<Student> students = UserManager.readStudents();
         ArrayList<Staff> staffs = UserManager.readStaff();
@@ -60,5 +82,10 @@ public class UserLogin {
         return false;
     }
 
+    /**
+    * Gets the type of the logged-in user (e.g., "student" or "staff").
+    *
+    * @return The user type.
+    */
     public String getUserType() { return userType; }
 }

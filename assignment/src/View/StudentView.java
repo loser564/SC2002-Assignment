@@ -4,13 +4,33 @@ import java.util.Scanner;
 import Model.Camp.Camp;
 import Model.CampComm.CampCommiteeManager;
 import Model.Student.Student;
+import Model.User.UserRole;
 
+/**
+* The StudentView class represents the view for students in the CAMs.
+* It provides a menu for students to interact with various features such as changing passwords, viewing camps,
+* registering for camps, quitting camps, applying for camp committees, viewing registered camps, submitting and managing
+* enquiries, and accessing the camp committee menu.
+*
+* @author Alicia
+* @version 1.0
+* @since 2023-11-19
+*/
 public class StudentView implements MainView {
+    /**
+    * Constructs a StudentView instance with the given user ID and password.
+    *
+    * @param userID The user ID of the student.
+    * @param password The password of the student.
+    */
     public StudentView(String UserID, String password ){
         
 
     }
 
+    /**
+    * Prints the menu options available to the student.
+    */
     @Override
     public void printMenu(){
         System.out.println("1. Change Password");
@@ -25,6 +45,12 @@ public class StudentView implements MainView {
         System.out.println("10. Logout");
     }
 
+    /**
+    * Displays the main application view for students, allowing them to interact with different features based on their choices.
+    *
+    * @param userID The user ID of the student.
+    * @param password The password of the student.
+    */
     @Override
     public void viewApp(String userID, String password){
         int choice = 0;
@@ -32,6 +58,8 @@ public class StudentView implements MainView {
         Student student = new Student();
         student.setUserID(userID);
         student.setPassword(password);
+        student.setRole(UserRole.STUDENT);
+        System.out.println("Student Role: " + student.getUserRole());
 
         System.out.println("Welcome " + userID + "!");
         boolean pwChange = false;
@@ -47,7 +75,7 @@ public class StudentView implements MainView {
                             case 1: // change password
                                 System.out.println("Changing password ....");
                                 if(pwChange == false){
-                                    pwChange = studentFunc.changePassword(student,password);
+                                    pwChange = studentFunc.changePassword(student,userID,password);
                                     break;
                                 }
                                 else{

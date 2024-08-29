@@ -1,4 +1,4 @@
-CHERN 	YCHERN@e.ntu.edu.sg	SCSE	password
+CHERN YCHERN SCSE Hello
 KOH 	KOH1@e.ntu.edu.sg	ADM	password
 BRANDON 	BR015@e.ntu.edu.sg	EEE	password
 CALVIN 	CT113@e.ntu.edu.sg	SCSE	password
